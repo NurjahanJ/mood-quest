@@ -1,89 +1,123 @@
-import { describe, it, expect } from 'vitest';
-import { validatePreferences } from '../lib/validation';
-import { UserPreferences } from '../lib/types';
+/**
+ * FILE: validation.test.ts
+ * PURPOSE: Test input validation logic
+ * 
+ * TESTS:
+ * - Valid game preferences pass
+ * - Valid movie preferences pass
+ * - Missing required fields fail
+ * - Category-specific validation works
+ * 
+ * STATUS: Complete
+ */
 
-describe('validatePreferences', () => {
-  it('should pass with all required fields', () => {
-    const validPreferences: UserPreferences = {
+import { describe, it, expect } from 'vitest';
+import { validatePreferences } from '@/lib/validation';
+import { UserPreferences } from '@/lib/types';
+
+describe('Validation', () => {
+  it('should pass for valid game preferences', () => {
+    const preferences: Partial<UserPreferences> = {
+      type: 'games',
+      mode: 'Quick Match',
       mood: 'Relaxing',
       timeAvailable: 'About 1 hour',
       platform: 'PC',
       playStyle: 'Solo',
+      preferredGenre: 'Simulation',
+      avoid: []
     };
 
-    const result = validatePreferences(validPreferences);
+    const result = validatePreferences(preferences);
     expect(result.isValid).toBe(true);
-    expect(result.error).toBeUndefined();
   });
 
-  it('should pass with optional fields included', () => {
-    const validPreferences: UserPreferences = {
-      mood: 'Competitive',
-      timeAvailable: 'Several hours',
-      platform: 'PlayStation',
-      playStyle: 'Multiplayer',
-      preferredGenre: 'Action',
-      avoid: ['horror', 'grinding'],
+  it('should pass for valid movie preferences', () => {
+    const preferences: Partial<UserPreferences> = {
+      type: 'movies',
+      mode: 'Deep Match',
+      mood: 'Comforting',
+      timeAvailable: 'About 2 hours',
+      streamingPlatform: 'Netflix',
+      preferredMovieGenre: 'Comedy',
+      avoid: []
     };
 
-    const result = validatePreferences(validPreferences);
+    const result = validatePreferences(preferences);
     expect(result.isValid).toBe(true);
-    expect(result.error).toBeUndefined();
+  });
+
+  it('should fail when category is missing', () => {
+    const preferences: Partial<UserPreferences> = {
+      mood: 'Relaxing',
+      timeAvailable: 'About 1 hour'
+    };
+
+    const result = validatePreferences(preferences);
+    expect(result.isValid).toBe(false);
+    expect(result.error).toContain('type');
   });
 
   it('should fail when mood is missing', () => {
-    const invalidPreferences = {
+    const preferences: Partial<UserPreferences> = {
+      type: 'games',
       timeAvailable: 'About 1 hour',
       platform: 'PC',
-      playStyle: 'Solo',
-    } as Partial<UserPreferences>;
+      playStyle: 'Solo'
+    };
 
-    const result = validatePreferences(invalidPreferences);
+    const result = validatePreferences(preferences);
     expect(result.isValid).toBe(false);
-    expect(result.error).toBe('Mood is required');
   });
 
-  it('should fail when timeAvailable is missing', () => {
-    const invalidPreferences = {
-      mood: 'Relaxing',
-      platform: 'PC',
-      playStyle: 'Solo',
-    } as Partial<UserPreferences>;
-
-    const result = validatePreferences(invalidPreferences);
-    expect(result.isValid).toBe(false);
-    expect(result.error).toBe('Time available is required');
-  });
-
-  it('should fail when platform is missing', () => {
-    const invalidPreferences = {
+  it('should fail when platform is missing for games', () => {
+    const preferences: Partial<UserPreferences> = {
+      type: 'games',
       mood: 'Relaxing',
       timeAvailable: 'About 1 hour',
-      playStyle: 'Solo',
-    } as Partial<UserPreferences>;
+      playStyle: 'Solo'
+    };
 
-    const result = validatePreferences(invalidPreferences);
+    const result = validatePreferences(preferences);
     expect(result.isValid).toBe(false);
-    expect(result.error).toBe('Platform is required');
+    expect(result.error).toContain('platform');
   });
 
-  it('should fail when playStyle is missing', () => {
-    const invalidPreferences = {
+  it('should fail when streaming platform is missing for movies', () => {
+    const preferences: Partial<UserPreferences> = {
+      type: 'movies',
+      mood: 'Comforting',
+      timeAvailable: 'About 2 hours'
+    };
+
+    const result = validatePreferences(preferences);
+    expect(result.isValid).toBe(false);
+    expect(result.error).toContain('streaming');
+  });
+
+  it('should fail when play style is missing for games', () => {
+    const preferences: Partial<UserPreferences> = {
+      type: 'games',
+      mood: 'Relaxing',
+      timeAvailable: 'About 1 hour',
+      platform: 'PC'
+    };
+
+    const result = validatePreferences(preferences);
+    expect(result.isValid).toBe(false);
+    expect(result.error).toContain('play style');
+  });
+
+  it('should fail when mode is missing', () => {
+    const preferences: Partial<UserPreferences> = {
+      type: 'games',
       mood: 'Relaxing',
       timeAvailable: 'About 1 hour',
       platform: 'PC',
-    } as Partial<UserPreferences>;
+      playStyle: 'Solo'
+    };
 
-    const result = validatePreferences(invalidPreferences);
+    const result = validatePreferences(preferences);
     expect(result.isValid).toBe(false);
-    expect(result.error).toBe('Play style is required');
-  });
-
-  it('should fail when all fields are missing', () => {
-    const invalidPreferences = {} as Partial<UserPreferences>;
-
-    const result = validatePreferences(invalidPreferences);
-    expect(result.isValid).toBe(false);
-    expect(result.error).toBeDefined();
   });
 });

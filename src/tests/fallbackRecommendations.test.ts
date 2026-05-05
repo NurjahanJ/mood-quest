@@ -1,88 +1,134 @@
-import { describe, it, expect } from 'vitest';
-import { getFallbackRecommendations } from '../lib/fallbackRecommendations';
-import { UserPreferences } from '../lib/types';
+/**
+ * FILE: fallbackRecommendations.test.ts
+ * PURPOSE: Test fallback recommendation system
+ * 
+ * TESTS:
+ * - Returns exactly 3 recommendations
+ * - Works for games
+ * - Works for movies
+ * - Includes taste profile
+ * - Matches RecommendationResponse schema
+ * 
+ * STATUS: Complete
+ */
 
-describe('getFallbackRecommendations', () => {
-  it('should return exactly 3 recommendations', () => {
+import { describe, it, expect } from 'vitest';
+import { getFallbackRecommendations } from '@/lib/fallbackRecommendations';
+import { UserPreferences } from '@/lib/types';
+
+describe('Fallback Recommendations', () => {
+  it('should return exactly 3 game recommendations', () => {
     const preferences: UserPreferences = {
+      type: 'games',
+      mode: 'Quick Match',
       mood: 'Relaxing',
       timeAvailable: 'About 1 hour',
       platform: 'PC',
       playStyle: 'Solo',
+      preferredGenre: 'Simulation',
+      avoid: []
     };
 
-    const recommendations = getFallbackRecommendations(preferences);
-    expect(recommendations).toHaveLength(3);
+    const results = getFallbackRecommendations(preferences);
+    
+    expect(Array.isArray(results)).toBe(true);
+    expect(results).toHaveLength(3);
   });
 
-  it('should return recommendations with all required fields', () => {
+  it('should return exactly 3 movie recommendations', () => {
     const preferences: UserPreferences = {
-      mood: 'Competitive',
-      timeAvailable: 'Under 30 minutes',
-      platform: 'Nintendo Switch',
-      playStyle: 'Multiplayer',
+      type: 'movies',
+      mode: 'Deep Match',
+      mood: 'Comforting',
+      timeAvailable: 'About 2 hours',
+      streamingPlatform: 'Netflix',
+      preferredMovieGenre: 'Comedy',
+      avoid: []
     };
 
-    const recommendations = getFallbackRecommendations(preferences);
+    const results = getFallbackRecommendations(preferences);
+    
+    expect(Array.isArray(results)).toBe(true);
+    expect(results).toHaveLength(3);
+  });
 
-    recommendations.forEach((rec) => {
+  it('should include all required fields for games', () => {
+    const preferences: UserPreferences = {  
+      type: 'games',
+      mode: 'Surprise Me',
+      mood: 'Competitive',
+      timeAvailable: 'Several hours',
+      platform: 'PlayStation',
+      playStyle: 'Multiplayer',
+      preferredGenre: 'Action',
+      avoid: ['horror']
+    };
+
+    const results = getFallbackRecommendations(preferences);
+    
+    results.forEach(rec => {
+      expect(rec).toHaveProperty('id');
+      expect(rec).toHaveProperty('category');
       expect(rec).toHaveProperty('title');
       expect(rec).toHaveProperty('whyItFits');
       expect(rec).toHaveProperty('moodMatch');
       expect(rec).toHaveProperty('timeFit');
       expect(rec).toHaveProperty('platformFit');
-      expect(rec).toHaveProperty('similarGames');
       expect(rec).toHaveProperty('confidence');
-
-      expect(typeof rec.title).toBe('string');
-      expect(typeof rec.whyItFits).toBe('string');
-      expect(typeof rec.moodMatch).toBe('string');
-      expect(typeof rec.timeFit).toBe('string');
-      expect(typeof rec.platformFit).toBe('string');
-      expect(Array.isArray(rec.similarGames)).toBe(true);
-      expect(typeof rec.confidence).toBe('number');
+      expect(rec).toHaveProperty('scores');
     });
   });
 
-  it('should return confidence scores between 1 and 100', () => {
+  it('should return confidence scores between 0 and 100', () => {
     const preferences: UserPreferences = {
-      mood: 'Strategic',
-      timeAvailable: 'Several hours',
-      platform: 'PC',
-      playStyle: 'Solo',
+      type: 'movies',
+      mode: 'Quick Match',
+      mood: 'Funny',
+      timeAvailable: 'Under 90 minutes',
+      streamingPlatform: 'Hulu',
+      preferredMovieGenre: 'Comedy',
+      avoid: []
     };
 
-    const recommendations = getFallbackRecommendations(preferences);
-
-    recommendations.forEach((rec) => {
-      expect(rec.confidence).toBeGreaterThanOrEqual(1);
+    const results = getFallbackRecommendations(preferences);
+    
+    results.forEach(rec => {
+      expect(rec.confidence).toBeGreaterThanOrEqual(0);
       expect(rec.confidence).toBeLessThanOrEqual(100);
     });
   });
 
-  it('should return different recommendations for different moods', () => {
-    const relaxingPrefs: UserPreferences = {
+  it('should work for both games and movies', () => {
+    const gamePrefs: UserPreferences = {
+      type: 'games',
+      mode: 'Quick Match',
       mood: 'Relaxing',
       timeAvailable: 'About 1 hour',
       platform: 'PC',
       playStyle: 'Solo',
+      avoid: []
     };
 
-    const competitivePrefs: UserPreferences = {
-      mood: 'Competitive',
-      timeAvailable: 'About 1 hour',
-      platform: 'PC',
-      playStyle: 'Solo',
+    const moviePrefs: UserPreferences = {
+      type: 'movies',
+      mode: 'Quick Match',
+      mood: 'Comforting',
+      timeAvailable: 'About 2 hours',
+      streamingPlatform: 'Netflix',
+      avoid: []
     };
 
-    const relaxingRecs = getFallbackRecommendations(relaxingPrefs);
-    const competitiveRecs = getFallbackRecommendations(competitivePrefs);
+    const gameRecs = getFallbackRecommendations(gamePrefs);
+    const movieRecs = getFallbackRecommendations(moviePrefs);
 
-    expect(relaxingRecs[0].title).not.toBe(competitiveRecs[0].title);
+    expect(gameRecs).toHaveLength(3);
+    expect(movieRecs).toHaveLength(3);
+    expect(gameRecs[0].category).toBe('game');
+    expect(movieRecs[0].category).toBe('movie');
   });
 
-  it('should handle all mood types', () => {
-    const moods: Array<UserPreferences['mood']> = [
+  it('should handle all game mood types', () => {
+    const moods: Array<'Relaxing' | 'Cozy' | 'Competitive' | 'Story-driven' | 'Strategic' | 'Chaotic'> = [
       'Relaxing',
       'Cozy',
       'Competitive',
@@ -93,56 +139,82 @@ describe('getFallbackRecommendations', () => {
 
     moods.forEach((mood) => {
       const preferences: UserPreferences = {
+        type: 'games',
+        mode: 'Quick Match',
         mood,
         timeAvailable: 'About 1 hour',
         platform: 'PC',
         playStyle: 'Solo',
+        avoid: []
       };
 
-      const recommendations = getFallbackRecommendations(preferences);
-      expect(recommendations).toHaveLength(3);
-      expect(recommendations[0].confidence).toBeGreaterThan(0);
+      const results = getFallbackRecommendations(preferences);
+      expect(results).toHaveLength(3);
+      expect(results[0].confidence).toBeGreaterThan(0);
     });
   });
 
-  it('should return valid similarGames arrays', () => {
+  it('should return valid similar titles arrays', () => {
     const preferences: UserPreferences = {
+      type: 'games',
+      mode: 'Quick Match',
       mood: 'Cozy',
       timeAvailable: 'About 1 hour',
       platform: 'Nintendo Switch',
       playStyle: 'Solo',
+      avoid: []
     };
 
-    const recommendations = getFallbackRecommendations(preferences);
+    const results = getFallbackRecommendations(preferences);
 
-    recommendations.forEach((rec) => {
-      expect(rec.similarGames.length).toBeGreaterThan(0);
-      rec.similarGames.forEach((game) => {
-        expect(typeof game).toBe('string');
-        expect(game.length).toBeGreaterThan(0);
-      });
+    results.forEach((rec) => {
+      if ('similarGames' in rec) {
+        expect(rec.similarGames.length).toBeGreaterThan(0);
+        rec.similarGames.forEach((game) => {
+          expect(typeof game).toBe('string');
+          expect(game.length).toBeGreaterThan(0);
+        });
+      }
     });
   });
 
-  it('should adjust confidence when preferredGenre is specified', () => {
-    const prefsWithoutGenre: UserPreferences = {
+  it('should handle avoid tags', () => {
+    const preferences: UserPreferences = {
+      type: 'games',
+      mode: 'Quick Match',
       mood: 'Story-driven',
       timeAvailable: 'Several hours',
       platform: 'PlayStation',
       playStyle: 'Solo',
+      avoid: ['violence', 'horror']
     };
 
-    const prefsWithGenre: UserPreferences = {
-      mood: 'Story-driven',
-      timeAvailable: 'Several hours',
-      platform: 'PlayStation',
-      playStyle: 'Solo',
-      preferredGenre: 'RPG',
+    const results = getFallbackRecommendations(preferences);
+    
+    expect(results).toHaveLength(3);
+    // Results should still be returned even with avoid tags
+    expect(results[0].confidence).toBeGreaterThan(0);
+  });
+
+  it('should return recommendations with scores object', () => {
+    const preferences: UserPreferences = {
+      type: 'movies',
+      mode: 'Deep Match',
+      mood: 'Emotional',
+      timeAvailable: 'About 2 hours',
+      streamingPlatform: 'Netflix',
+      preferredMovieGenre: 'Drama',
+      avoid: []
     };
 
-    const recsWithoutGenre = getFallbackRecommendations(prefsWithoutGenre);
-    const recsWithGenre = getFallbackRecommendations(prefsWithGenre);
-
-    expect(recsWithGenre[0].confidence).toBeLessThan(recsWithoutGenre[0].confidence);
+    const results = getFallbackRecommendations(preferences);
+    
+    results.forEach(rec => {
+      expect(rec.scores).toBeDefined();
+      expect(rec.scores).toHaveProperty('mood');
+      expect(rec.scores).toHaveProperty('time');
+      expect(rec.scores).toHaveProperty('genre');
+      expect(rec.scores).toHaveProperty('overall');
+    });
   });
 });

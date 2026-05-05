@@ -23,7 +23,7 @@ export type PlayStyle = 'Solo' | 'Co-op' | 'Multiplayer' | 'Either';
 export type Genre = 'RPG' | 'Puzzle' | 'Simulation' | 'Adventure' | 'Action' | 'Strategy' | 'No preference';
 
 
-export type MovieGenre = 'Drama' | 'Comedy' | 'Thriller' | 'Sci-Fi' | 'Romance' | 'Documentary' | 'Animation' | 'No preference';
+export type MovieGenre = 'Drama' | 'Comedy' | 'Thriller' | 'Sci-Fi' | 'Romance' | 'Documentary' | 'Animation' | 'Fantasy' | 'Horror' | 'No preference';
 
 
 export interface UserPreferences {
@@ -87,8 +87,21 @@ export interface MovieRecommendation {
 
 
 export interface RecommendationResponse {
+  recommendations: (GameRecommendation | MovieRecommendation)[];
+  tasteProfile?: TasteProfile;
+}
 
-  recommendations: GameRecommendation[];
+export interface TasteProfile {
+  summary: string;
+  primaryMood: string;
+  preferredExperience: string;
+  avoidPattern: string;
+}
 
+export interface RefineRequest {
+  originalPreferences: UserPreferences;
+  likedRecommendations: string[];
+  dislikedRecommendations: string[];
+  savedRecommendations?: string[];
 }
 
