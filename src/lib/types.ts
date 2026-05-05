@@ -87,7 +87,8 @@ export interface MovieRecommendation {
 
 
 export interface RecommendationResponse {
-  recommendations: GameRecommendation[];
+  recommendations: (GameRecommendation | MovieRecommendation)[];
+  tasteProfile?: TasteProfile;
 }
 
 export interface TasteProfile {
@@ -95,5 +96,12 @@ export interface TasteProfile {
   primaryMood: string;
   preferredExperience: string;
   avoidPattern: string;
+}
+
+export interface RefineRequest {
+  originalPreferences: UserPreferences;
+  likedRecommendations: string[];
+  dislikedRecommendations: string[];
+  savedRecommendations?: string[];
 }
 
