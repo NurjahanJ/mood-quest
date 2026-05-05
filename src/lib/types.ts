@@ -87,8 +87,13 @@ export interface MovieRecommendation {
 
 
 export interface RecommendationResponse {
-
   recommendations: GameRecommendation[];
+}
 
+export interface TasteProfile {
+  summary: string;
+  primaryMood: string;
+  preferredExperience: string;
+  avoidPattern: string;
 }
 
