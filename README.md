@@ -1,8 +1,8 @@
 # MoodQuest
 
-**AI-Powered Game Recommendation Engine**
+**AI-Powered Game & Movie Recommendation Engine**
 
-MoodQuest is a polished, portfolio-quality web application that recommends video games based on your current mood, available time, gaming platform, play style, and preferences. Built to demonstrate expertise in AI integration, product thinking, and full-stack development.
+MoodQuest is a polished, portfolio-quality web application that recommends both video games and movies based on your current mood, available time, platform, and preferences. Built to demonstrate expertise in AI integration, product thinking, and full-stack development with a beautiful, modern UI.
 
 ---
 
@@ -23,21 +23,33 @@ This isn't a toy project—it's designed to feel like a real product you'd ship 
 
 ## Features
 
-✨ **AI-Powered Recommendations**
-- Uses OpenAI's GPT-4o-mini to generate personalized game suggestions
-- Considers mood, time availability, platform, play style, and genre preferences
-- Provides detailed explanations for why each game fits your criteria
+✨ **Dual Recommendation System**
+- **Games**: Personalized game recommendations based on platform, play style, and mood
+- **Movies**: Curated movie suggestions based on streaming platform and preferences
+- Seamless tab switching between games and movies
+- Uses OpenAI's GPT-4o-mini for intelligent, context-aware suggestions
+
+🎨 **Beautiful, Modern UI**
+- Animated gradient backgrounds and smooth transitions
+- Interactive mood selection with emojis
+- Enhanced recommendation cards with color-coded confidence scores
+- Responsive design that works perfectly on all devices
+- Dark theme with purple/pink gradient accents
+- Hover effects and micro-interactions for better UX
 
 🛡️ **Intelligent Fallback System**
-- Local recommendation engine activates if AI API fails or is unavailable
+- Separate fallback engines for games and movies
+- 18 curated game recommendations across 6 moods
+- 18 hand-picked movie recommendations across 6 moods
 - Ensures users always get quality recommendations
 - Seamless experience regardless of backend status
 
-🎨 **Polished UI/UX**
-- Modern dark theme with gradient accents
-- Responsive design that works on all devices
-- Clear, professional copy and intuitive form design
-- Loading states and error handling
+🧠 **Smart Preference Handling**
+- Conditional form fields based on recommendation type
+- Platform selection for games (PC, consoles, mobile)
+- Streaming platform selection for movies (Netflix, Disney+, etc.)
+- Genre preferences for both games and movies
+- Custom "avoid" filters for personalized results
 
 🧪 **Comprehensive Testing**
 - Vitest for unit testing
@@ -64,18 +76,21 @@ src/
 ├── app/
 │   ├── api/
 │   │   └── recommend/
-│   │       └── route.ts          # API endpoint for recommendations
-│   ├── globals.css               # Global styles
-│   ├── layout.tsx                # Root layout
-│   └── page.tsx                  # Main page
+│   │       └── route.ts                    # API endpoint for games & movies
+│   ├── globals.css                         # Global styles with animations
+│   ├── layout.tsx                          # Root layout
+│   └── page.tsx                            # Main page with enhanced UI
 ├── components/
-│   ├── PreferenceForm.tsx        # User input form
-│   ├── RecommendationCard.tsx    # Individual game card
-│   └── ResultsSection.tsx        # Results display with states
+│   ├── EnhancedPreferenceForm.tsx          # Dual-mode form with tabs
+│   ├── EnhancedRecommendationCard.tsx      # Enhanced cards for games/movies
+│   ├── PreferenceForm.tsx                  # Legacy form (games only)
+│   ├── RecommendationCard.tsx              # Legacy card (games only)
+│   └── ResultsSection.tsx                  # Legacy results section
 ├── lib/
-│   ├── fallbackRecommendations.ts # Local recommendation engine
-│   ├── types.ts                   # TypeScript type definitions
-│   └── validation.ts              # Input validation logic
+│   ├── fallbackRecommendations.ts          # Game fallback engine
+│   ├── fallbackMovieRecommendations.ts     # Movie fallback engine
+│   ├── types.ts                            # TypeScript type definitions
+│   └── validation.ts                       # Input validation logic
 └── tests/
     ├── fallbackRecommendations.test.ts
     └── validation.test.ts
@@ -150,21 +165,23 @@ npm run test:ui
 
 ### How It Works
 
-1. **User Input**: User fills out a structured form with their preferences
-2. **Validation**: Input is validated before being sent to the API
-3. **AI Request**: Preferences are sent to OpenAI with a carefully crafted system prompt
-4. **Structured Output**: OpenAI returns JSON matching our exact schema
-5. **Validation**: Response is validated to ensure it meets requirements
-6. **Display**: Recommendations are displayed with detailed explanations
+1. **User Input**: User selects recommendation type (games/movies) and fills preferences
+2. **Validation**: Input is validated with type-specific requirements
+3. **Dynamic Prompts**: System generates appropriate prompts based on type
+4. **AI Request**: Preferences sent to OpenAI with tailored system prompt
+5. **Structured Output**: OpenAI returns JSON matching the exact schema
+6. **Validation**: Response validated to ensure it meets requirements
+7. **Display**: Recommendations shown with enhanced visual cards
 
 ### System Prompt Design
 
-The system prompt enforces:
-- Exact JSON schema compliance
+The system prompt dynamically adjusts based on recommendation type and enforces:
+- Exact JSON schema compliance (different for games vs movies)
 - Exactly 3 recommendations
 - Confidence scores between 1-100
-- Real, existing games only
+- Real, existing games/movies only
 - Thoughtful, specific explanations
+- Platform-specific availability information
 
 ### Response Format
 
@@ -212,15 +229,25 @@ In production systems, external APIs can fail. MoodQuest ensures users always ge
 
 ### Fallback Coverage
 
-The fallback system includes curated recommendations for:
-- Relaxing
-- Cozy
-- Competitive
-- Story-driven
-- Strategic
-- Chaotic
+The fallback system includes curated recommendations for both games and movies:
 
-Each mood has 3 carefully selected games with detailed explanations.
+**Games** (18 total):
+- Relaxing: Stardew Valley, Journey, Unpacking
+- Cozy: Animal Crossing, Spiritfarer, A Short Hike
+- Competitive: Rocket League, Smash Bros, StarCraft II
+- Story-driven: The Last of Us, Disco Elysium, What Remains of Edith Finch
+- Strategic: Civilization VI, Into the Breach, Factorio
+- Chaotic: Overcooked 2, DOOM Eternal, Risk of Rain 2
+
+**Movies** (18 total):
+- Relaxing: My Neighbor Totoro, Chef, Amélie
+- Cozy: The Grand Budapest Hotel, Little Women, Paddington 2
+- Competitive: Rush, Moneyball, Whiplash
+- Story-driven: The Shawshank Redemption, Arrival, Parasite
+- Strategic: The Prestige, Ocean's Eleven, The Imitation Game
+- Chaotic: Everything Everywhere All at Once, Mad Max: Fury Road, Scott Pilgrim
+
+Each recommendation includes detailed explanations, mood matching, time fit analysis, and similar titles.
 
 ---
 
@@ -229,23 +256,34 @@ Each mood has 3 carefully selected games with detailed explanations.
 **Enhanced AI Features**:
 - Multi-turn conversations to refine recommendations
 - User preference learning over time
-- Integration with game databases (IGDB, Steam API)
+- Integration with external APIs (IGDB, TMDB, Steam)
+- Hybrid recommendations (game + movie combos)
 
 **User Features**:
-- Save favorite recommendations
-- Share recommendations with friends
+- Save favorite recommendations to profile
+- Share recommendations with friends via link
 - Rate recommendations to improve future suggestions
+- Recommendation history and tracking
+- "Watch/Play later" lists
+
+**New Content Types**:
+- TV series recommendations
+- Book recommendations
+- Music/podcast recommendations
+- Multi-media recommendation bundles
 
 **Technical Enhancements**:
 - Redis caching for common queries
 - A/B testing framework
 - Analytics and user behavior tracking
 - Progressive Web App (PWA) support
+- User authentication and profiles
 
 **Testing**:
 - E2E tests with Playwright
 - API integration tests
 - Performance testing
+- Visual regression testing
 
 ---
 
