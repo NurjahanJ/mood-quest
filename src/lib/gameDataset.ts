@@ -1,0 +1,306 @@
+/**
+ * FILE: gameDataset.ts
+ * PURPOSE: Curated game database for fallback recommendations
+ * 
+ * STRUCTURE:
+ * Each game includes:
+ * - id: unique identifier
+ * - title: game name
+ * - moods: array of matching moods
+ * - platforms: available platforms
+ * - genres: game genres
+ * - playStyles: solo/co-op/multiplayer
+ * - timeFits: suitable session lengths
+ * - avoidTags: content warnings
+ * - similarTitles: related games
+ * 
+ * DEPENDENCIES:
+ * - None (pure data)
+ * 
+ * USED BY:
+ * - scoring.ts (for calculating match scores)
+ * - fallbackRecommendations.ts (for generating recommendations)
+ * 
+ * STATUS: Complete
+ * DO NOT MODIFY: Yes (unless adding more games)
+ * REASON: Scoring algorithm depends on this structure
+ */
+
+export interface GameDataItem {
+  id: string;
+  title: string;
+  moods: string[];
+  platforms: string[];
+  genres: string[];
+  playStyles: string[];
+  timeFits: string[];
+  avoidTags: string[];
+  similarTitles: string[];
+}
+
+export const gameDataset: GameDataItem[] = [
+  {
+    id: 'stardew-valley',
+    title: 'Stardew Valley',
+    moods: ['Relaxing', 'Cozy'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox', 'Mobile'],
+    genres: ['Simulation', 'RPG'],
+    playStyles: ['Solo'],
+    timeFits: ['Under 30 minutes', 'About 1 hour', 'Several hours'],
+    avoidTags: [],
+    similarTitles: ['Animal Crossing: New Horizons', 'Spiritfarer', 'My Time at Portia']
+  },
+  {
+    id: 'animal-crossing',
+    title: 'Animal Crossing: New Horizons',
+    moods: ['Relaxing', 'Cozy'],
+    platforms: ['Nintendo Switch'],
+    genres: ['Simulation'],
+    playStyles: ['Solo'],
+    timeFits: ['Under 30 minutes', 'About 1 hour', 'Several hours'],
+    avoidTags: [],
+    similarTitles: ['Stardew Valley', 'Spiritfarer', 'Unpacking']
+  },
+  {
+    id: 'hades',
+    title: 'Hades',
+    moods: ['Competitive', 'Chaotic', 'Story-driven'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox'],
+    genres: ['Action', 'RPG'],
+    playStyles: ['Solo'],
+    timeFits: ['Under 30 minutes', 'About 1 hour'],
+    avoidTags: ['violence'],
+    similarTitles: ['Dead Cells', 'Slay the Spire', 'Hollow Knight']
+  },
+  {
+    id: 'celeste',
+    title: 'Celeste',
+    moods: ['Competitive', 'Story-driven'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox'],
+    genres: ['Puzzle', 'Adventure'],
+    playStyles: ['Solo'],
+    timeFits: ['Under 30 minutes', 'About 1 hour'],
+    avoidTags: [],
+    similarTitles: ['Hollow Knight', 'Ori and the Blind Forest', 'Super Meat Boy']
+  },
+  {
+    id: 'minecraft',
+    title: 'Minecraft',
+    moods: ['Relaxing', 'Cozy', 'Strategic'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox', 'Mobile'],
+    genres: ['Simulation', 'Adventure'],
+    playStyles: ['Solo', 'Co-op', 'Multiplayer'],
+    timeFits: ['Under 30 minutes', 'About 1 hour', 'Several hours'],
+    avoidTags: [],
+    similarTitles: ['Terraria', 'Valheim', 'Lego Worlds']
+  },
+  {
+    id: 'zelda-botw',
+    title: 'The Legend of Zelda: Breath of the Wild',
+    moods: ['Story-driven', 'Strategic'],
+    platforms: ['Nintendo Switch'],
+    genres: ['Adventure', 'Action'],
+    playStyles: ['Solo'],
+    timeFits: ['About 1 hour', 'Several hours'],
+    avoidTags: ['violence'],
+    similarTitles: ['Genshin Impact', 'Immortals Fenyx Rising', 'Horizon Zero Dawn']
+  },
+  {
+    id: 'mario-kart-8',
+    title: 'Mario Kart 8 Deluxe',
+    moods: ['Competitive', 'Chaotic'],
+    platforms: ['Nintendo Switch'],
+    genres: ['Action'],
+    playStyles: ['Solo', 'Co-op', 'Multiplayer'],
+    timeFits: ['Under 30 minutes', 'About 1 hour'],
+    avoidTags: [],
+    similarTitles: ['Crash Team Racing', 'Sonic Racing', 'Forza Horizon']
+  },
+  {
+    id: 'portal-2',
+    title: 'Portal 2',
+    moods: ['Strategic', 'Story-driven'],
+    platforms: ['PC', 'PlayStation', 'Xbox'],
+    genres: ['Puzzle', 'Adventure'],
+    playStyles: ['Solo', 'Co-op'],
+    timeFits: ['About 1 hour', 'Several hours'],
+    avoidTags: [],
+    similarTitles: ['The Witness', 'Talos Principle', 'Superliminal']
+  },
+  {
+    id: 'sims-4',
+    title: 'The Sims 4',
+    moods: ['Relaxing', 'Cozy'],
+    platforms: ['PC', 'PlayStation', 'Xbox'],
+    genres: ['Simulation'],
+    playStyles: ['Solo'],
+    timeFits: ['About 1 hour', 'Several hours'],
+    avoidTags: [],
+    similarTitles: ['Stardew Valley', 'Animal Crossing', 'Two Point Hospital']
+  },
+  {
+    id: 'hollow-knight',
+    title: 'Hollow Knight',
+    moods: ['Competitive', 'Story-driven'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox'],
+    genres: ['Action', 'Adventure'],
+    playStyles: ['Solo'],
+    timeFits: ['About 1 hour', 'Several hours'],
+    avoidTags: ['violence', 'horror'],
+    similarTitles: ['Celeste', 'Ori and the Blind Forest', 'Dead Cells']
+  },
+  {
+    id: 'overcooked-2',
+    title: 'Overcooked 2',
+    moods: ['Chaotic', 'Competitive'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox'],
+    genres: ['Puzzle', 'Simulation'],
+    playStyles: ['Co-op', 'Multiplayer'],
+    timeFits: ['Under 30 minutes', 'About 1 hour'],
+    avoidTags: [],
+    similarTitles: ['Moving Out', 'Tools Up!', 'Unrailed!']
+  },
+  {
+    id: 'unpacking',
+    title: 'Unpacking',
+    moods: ['Relaxing', 'Cozy'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox'],
+    genres: ['Puzzle', 'Simulation'],
+    playStyles: ['Solo'],
+    timeFits: ['Under 30 minutes', 'About 1 hour'],
+    avoidTags: [],
+    similarTitles: ['A Short Hike', 'Spiritfarer', 'Animal Crossing']
+  },
+  {
+    id: 'slay-the-spire',
+    title: 'Slay the Spire',
+    moods: ['Strategic', 'Competitive'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox', 'Mobile'],
+    genres: ['Strategy', 'RPG'],
+    playStyles: ['Solo'],
+    timeFits: ['Under 30 minutes', 'About 1 hour'],
+    avoidTags: ['violence'],
+    similarTitles: ['Hades', 'Monster Train', 'Inscryption']
+  },
+  {
+    id: 'firewatch',
+    title: 'Firewatch',
+    moods: ['Relaxing', 'Story-driven'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox'],
+    genres: ['Adventure'],
+    playStyles: ['Solo'],
+    timeFits: ['About 1 hour', 'Several hours'],
+    avoidTags: [],
+    similarTitles: ['What Remains of Edith Finch', 'Gone Home', 'The Witness']
+  },
+  {
+    id: 'among-us',
+    title: 'Among Us',
+    moods: ['Chaotic', 'Competitive'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox', 'Mobile'],
+    genres: ['Strategy'],
+    playStyles: ['Multiplayer'],
+    timeFits: ['Under 30 minutes', 'About 1 hour'],
+    avoidTags: ['violence'],
+    similarTitles: ['Fall Guys', 'Goose Goose Duck', 'Project Winter']
+  },
+  {
+    id: 'spiritfarer',
+    title: 'Spiritfarer',
+    moods: ['Cozy', 'Story-driven', 'Relaxing'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox'],
+    genres: ['Simulation', 'Adventure'],
+    playStyles: ['Solo', 'Co-op'],
+    timeFits: ['About 1 hour', 'Several hours'],
+    avoidTags: [],
+    similarTitles: ['Stardew Valley', 'Gris', 'A Short Hike']
+  },
+  {
+    id: 'tetris-effect',
+    title: 'Tetris Effect',
+    moods: ['Relaxing', 'Strategic'],
+    platforms: ['PC', 'PlayStation', 'Xbox', 'Nintendo Switch'],
+    genres: ['Puzzle'],
+    playStyles: ['Solo'],
+    timeFits: ['Under 30 minutes', 'About 1 hour'],
+    avoidTags: [],
+    similarTitles: ['Lumines', 'Rez Infinite', 'Geometry Wars']
+  },
+  {
+    id: 'fortnite',
+    title: 'Fortnite',
+    moods: ['Competitive', 'Chaotic'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox', 'Mobile'],
+    genres: ['Action'],
+    playStyles: ['Solo', 'Co-op', 'Multiplayer'],
+    timeFits: ['Under 30 minutes', 'About 1 hour'],
+    avoidTags: ['violence'],
+    similarTitles: ['Apex Legends', 'Call of Duty: Warzone', 'PUBG']
+  },
+  {
+    id: 'civilization-vi',
+    title: 'Civilization VI',
+    moods: ['Strategic'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox', 'Mobile'],
+    genres: ['Strategy'],
+    playStyles: ['Solo', 'Multiplayer'],
+    timeFits: ['Several hours'],
+    avoidTags: ['grinding'],
+    similarTitles: ['Age of Empires', 'Total War', 'Crusader Kings']
+  },
+  {
+    id: 'it-takes-two',
+    title: 'It Takes Two',
+    moods: ['Story-driven', 'Chaotic'],
+    platforms: ['PC', 'PlayStation', 'Xbox'],
+    genres: ['Adventure', 'Action'],
+    playStyles: ['Co-op'],
+    timeFits: ['About 1 hour', 'Several hours'],
+    avoidTags: [],
+    similarTitles: ['A Way Out', 'Unravel Two', 'Overcooked 2']
+  },
+  {
+    id: 'gris',
+    title: 'Gris',
+    moods: ['Relaxing', 'Story-driven', 'Cozy'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox', 'Mobile'],
+    genres: ['Adventure', 'Puzzle'],
+    playStyles: ['Solo'],
+    timeFits: ['About 1 hour', 'Several hours'],
+    avoidTags: [],
+    similarTitles: ['Journey', 'Abzû', 'Spiritfarer']
+  },
+  {
+    id: 'rocket-league',
+    title: 'Rocket League',
+    moods: ['Competitive', 'Chaotic'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox'],
+    genres: ['Action'],
+    playStyles: ['Solo', 'Co-op', 'Multiplayer'],
+    timeFits: ['Under 30 minutes', 'About 1 hour'],
+    avoidTags: [],
+    similarTitles: ['Fall Guys', 'Mario Kart 8', 'Knockout City']
+  },
+  {
+    id: 'ori-blind-forest',
+    title: 'Ori and the Blind Forest',
+    moods: ['Story-driven', 'Competitive'],
+    platforms: ['PC', 'Nintendo Switch', 'Xbox'],
+    genres: ['Adventure', 'Action'],
+    playStyles: ['Solo'],
+    timeFits: ['About 1 hour', 'Several hours'],
+    avoidTags: [],
+    similarTitles: ['Hollow Knight', 'Celeste', 'Gris']
+  },
+  {
+    id: 'fall-guys',
+    title: 'Fall Guys',
+    moods: ['Chaotic', 'Competitive'],
+    platforms: ['PC', 'Nintendo Switch', 'PlayStation', 'Xbox'],
+    genres: ['Action'],
+    playStyles: ['Solo', 'Multiplayer'],
+    timeFits: ['Under 30 minutes', 'About 1 hour'],
+    avoidTags: [],
+    similarTitles: ['Among Us', 'Rocket League', 'Gang Beasts']
+  }
+];
