@@ -93,8 +93,13 @@ export function validatePreferences(preferences: Partial<UserPreferences>): Vali
   }
 
   if (preferences.type === 'movies') {
-    // Movies don't require streamingPlatform, but if provided, validate it
-    // No additional required fields for movies beyond the common ones
+    // Movies require streaming platform
+    if (!preferences.streamingPlatform) {
+      return {
+        isValid: false,
+        error: 'Streaming platform is required for movie recommendations. Please select your streaming platform.',
+      };
+    }
   }
 
   // All validations passed

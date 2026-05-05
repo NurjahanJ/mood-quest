@@ -36,27 +36,51 @@ interface ModeSelectorProps {
   onChange: (mode: RecommendationMode) => void;
 }
 
+const modeStyles = {
+  'Quick Match': {
+    selected: 'bg-gradient-to-br from-emerald-600 to-emerald-800 shadow-xl shadow-emerald-500/30 scale-105 border-emerald-400',
+    gradient: 'from-emerald-500/20',
+    iconBg: 'bg-emerald-600/20 group-hover:bg-emerald-600/30',
+    iconColor: 'text-emerald-400 group-hover:text-emerald-300',
+    textColor: 'text-emerald-100',
+    dot: 'bg-emerald-600',
+  },
+  'Deep Match': {
+    selected: 'bg-gradient-to-br from-indigo-600 to-indigo-800 shadow-xl shadow-indigo-500/30 scale-105 border-indigo-400',
+    gradient: 'from-indigo-500/20',
+    iconBg: 'bg-indigo-600/20 group-hover:bg-indigo-600/30',
+    iconColor: 'text-indigo-400 group-hover:text-indigo-300',
+    textColor: 'text-indigo-100',
+    dot: 'bg-indigo-600',
+  },
+  'Surprise Me': {
+    selected: 'bg-gradient-to-br from-pink-600 to-pink-800 shadow-xl shadow-pink-500/30 scale-105 border-pink-400',
+    gradient: 'from-pink-500/20',
+    iconBg: 'bg-pink-600/20 group-hover:bg-pink-600/30',
+    iconColor: 'text-pink-400 group-hover:text-pink-300',
+    textColor: 'text-pink-100',
+    dot: 'bg-pink-600',
+  },
+};
+
 const modes = [
   {
     id: 'Quick Match' as RecommendationMode,
     icon: Zap,
     title: 'Quick Match',
     description: 'Fast recommendations based on time and platform',
-    color: 'emerald',
   },
   {
     id: 'Deep Match' as RecommendationMode,
     icon: Target,
     title: 'Deep Match',
     description: 'Detailed analysis of mood and genre preferences',
-    color: 'indigo',
   },
   {
     id: 'Surprise Me' as RecommendationMode,
     icon: Sparkles,
     title: 'Surprise Me',
     description: 'Unexpected picks with a touch of randomness',
-    color: 'pink',
   },
 ];
 
@@ -71,6 +95,7 @@ export default function ModeSelector({ value, onChange }: ModeSelectorProps) {
         {modes.map((mode) => {
           const Icon = mode.icon;
           const isSelected = value === mode.id;
+          const styles = modeStyles[mode.id];
           
           return (
             <button
@@ -80,17 +105,17 @@ export default function ModeSelector({ value, onChange }: ModeSelectorProps) {
                 group relative overflow-hidden rounded-xl p-6
                 transition-all duration-300 ease-out
                 ${isSelected
-                  ? `bg-gradient-to-br from-${mode.color}-600 to-${mode.color}-800 shadow-xl shadow-${mode.color}-500/30 scale-105`
+                  ? styles.selected
                   : 'bg-slate-800 hover:bg-slate-750 hover:scale-102 shadow-md hover:shadow-lg'
                 }
-                border-2 ${isSelected ? `border-${mode.color}-400` : 'border-slate-700 hover:border-slate-600'}
+                border-2 ${!isSelected ? 'border-slate-700 hover:border-slate-600' : ''}
               `}
               aria-pressed={isSelected}
               aria-label={`Select ${mode.title} mode`}
             >
               {/* Background gradient effect */}
               <div className={`
-                absolute inset-0 bg-gradient-to-br from-${mode.color}-500/20 to-transparent
+                absolute inset-0 bg-gradient-to-br ${styles.gradient} to-transparent
                 opacity-0 group-hover:opacity-100 transition-opacity duration-300
                 ${isSelected ? 'opacity-100' : ''}
               `} />
@@ -101,13 +126,13 @@ export default function ModeSelector({ value, onChange }: ModeSelectorProps) {
                   p-3 rounded-full transition-all duration-300
                   ${isSelected
                     ? 'bg-white/20'
-                    : `bg-${mode.color}-600/20 group-hover:bg-${mode.color}-600/30`
+                    : styles.iconBg
                   }
                 `}>
                   <Icon 
                     className={`
                       w-8 h-8 transition-colors duration-300
-                      ${isSelected ? 'text-white' : `text-${mode.color}-400 group-hover:text-${mode.color}-300`}
+                      ${isSelected ? 'text-white' : styles.iconColor}
                     `}
                   />
                 </div>
@@ -121,7 +146,7 @@ export default function ModeSelector({ value, onChange }: ModeSelectorProps) {
                   </h3>
                   <p className={`
                     text-xs transition-colors duration-300
-                    ${isSelected ? `text-${mode.color}-100` : 'text-slate-400 group-hover:text-slate-300'}
+                    ${isSelected ? styles.textColor : 'text-slate-400 group-hover:text-slate-300'}
                   `}>
                     {mode.description}
                   </p>
@@ -132,7 +157,7 @@ export default function ModeSelector({ value, onChange }: ModeSelectorProps) {
               {isSelected && (
                 <div className="absolute top-3 right-3">
                   <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
-                    <div className={`w-2.5 h-2.5 bg-${mode.color}-600 rounded-full`} />
+                    <div className={`w-2.5 h-2.5 ${styles.dot} rounded-full`} />
                   </div>
                 </div>
               )}

@@ -144,6 +144,7 @@ export default function Home() {
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+      setCurrentStep(4);
     } finally {
       setIsLoading(false);
     }
