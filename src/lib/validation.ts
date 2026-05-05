@@ -1,11 +1,19 @@
 import { UserPreferences } from './types';
 
+
+
 export interface ValidationResult {
+
   isValid: boolean;
+
   error?: string;
+
 }
 
+
+
 export function validatePreferences(preferences: Partial<UserPreferences>): ValidationResult {
+
   if (!preferences.type) {
     return {
       isValid: false,
@@ -14,45 +22,67 @@ export function validatePreferences(preferences: Partial<UserPreferences>): Vali
   }
 
   if (!preferences.mood) {
+
     return {
+
       isValid: false,
+
       error: 'Mood is required',
+
     };
+
   }
+
+
 
   if (!preferences.timeAvailable) {
+
     return {
+
       isValid: false,
+
       error: 'Time available is required',
+
     };
+
   }
+
+
 
   if (preferences.type === 'games') {
-    if (!preferences.platform) {
-      return {
-        isValid: false,
-        error: 'Platform is required for game recommendations',
-      };
-    }
+  if (!preferences.platform) {
 
-    if (!preferences.playStyle) {
-      return {
-        isValid: false,
-        error: 'Play style is required for game recommendations',
-      };
-    }
+    return {
+
+      isValid: false,
+
+      error: 'Platform is required',
+
+    };
+
   }
 
-  if (preferences.type === 'movies') {
-    if (!preferences.streamingPlatform) {
-      return {
-        isValid: false,
-        error: 'Streaming platform is required for movie recommendations',
-      };
-    }
+
+
+  if (!preferences.playStyle) {
+
+    return {
+
+      isValid: false,
+
+      error: 'Play style is required',
+
+    };
+
   }
+
+
 
   return {
+
     isValid: true,
+
   };
+
 }
+
