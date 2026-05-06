@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { MoodBoard } from '@/lib/types';
 import { Palette, Heart, Cloud, Music, MapPin, Layers, Compass } from 'lucide-react';
 
@@ -9,6 +10,39 @@ interface MoodBoardDisplayProps {
 }
 
 export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayProps) {
+  const [textureImages, setTextureImages] = useState<(string | null)[]>([]);
+  const [imagesLoading, setImagesLoading] = useState(false);
+
+  useEffect(() => {
+    if (!board.textures || board.textures.length === 0) return;
+    // If images were already provided (cached), skip fetching
+    if (board.textureImages && board.textureImages.length > 0) {
+      setTextureImages(board.textureImages);
+      return;
+    }
+
+    let cancelled = false;
+    setImagesLoading(true);
+
+    fetch('/api/generate-texture-images', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ textures: board.textures }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled && data.images) {
+          setTextureImages(data.images);
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setImagesLoading(false);
+      });
+
+    return () => { cancelled = true; };
+  }, [board.textures, board.textureImages]);
+
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8 animate-fade-in">
       {/* Header */}
@@ -136,14 +170,28 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
           <Layers className="w-4 h-4 text-cream-300" />
           <h3 className="text-sm font-medium text-cream-300 uppercase tracking-wider">Textures & Sensations</h3>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {board.textures.map((texture, i) => (
-            <span
-              key={i}
-              className="px-4 py-2 bg-night-800 border border-night-700 text-cream-200 rounded-2xl text-sm"
-            >
-              {texture}
-            </span>
+            <div key={i} className="flex flex-col items-center gap-2">
+              <div className="w-full aspect-square rounded-2xl overflow-hidden bg-night-800 border border-night-700">
+                {textureImages[i] ? (
+                  <img
+                    src={textureImages[i]!}
+                    alt={texture}
+                    className="w-full h-full object-cover transition-opacity duration-500"
+                  />
+                ) : imagesLoading ? (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="w-6 h-6 border-2 border-cream-400/30 border-t-cream-400 rounded-full animate-spin" />
+                  </div>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Layers className="w-8 h-8 text-cream-400/20" />
+                  </div>
+                )}
+              </div>
+              <span className="text-xs text-cream-300 text-center">{texture}</span>
+            </div>
           ))}
         </div>
       </section>

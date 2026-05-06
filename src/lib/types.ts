@@ -29,6 +29,7 @@ export interface MoodBoard {
   playlist: SoundtrackTrack[];
   bestSetting: string;
   textures: string[];
+  textureImages?: string[];
   similarVibes: SimilarVibe[];
 }
 
