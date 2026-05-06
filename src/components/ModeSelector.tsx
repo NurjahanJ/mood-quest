@@ -38,28 +38,31 @@ interface ModeSelectorProps {
 
 const modeStyles = {
   'Quick Match': {
-    selected: 'bg-gradient-to-br from-emerald-600 to-emerald-800 shadow-xl shadow-emerald-500/30 scale-105 border-emerald-400',
-    gradient: 'from-emerald-500/20',
-    iconBg: 'bg-emerald-600/20 group-hover:bg-emerald-600/30',
-    iconColor: 'text-emerald-400 group-hover:text-emerald-300',
-    textColor: 'text-emerald-100',
-    dot: 'bg-emerald-600',
+    selected: 'bg-night-800 shadow-xl shadow-amber-warm/10 scale-[1.02] border-amber-warm/60',
+    iconBg: 'bg-amber-warm/20',
+    iconBgHover: 'bg-night-700 group-hover:bg-amber-warm/10',
+    iconColor: 'text-amber-warm',
+    iconColorDefault: 'text-cream-300 group-hover:text-amber-warm',
+    glow: 'from-amber-warm/10',
+    dot: 'bg-amber-warm',
   },
   'Deep Match': {
-    selected: 'bg-gradient-to-br from-indigo-600 to-indigo-800 shadow-xl shadow-indigo-500/30 scale-105 border-indigo-400',
-    gradient: 'from-indigo-500/20',
-    iconBg: 'bg-indigo-600/20 group-hover:bg-indigo-600/30',
-    iconColor: 'text-indigo-400 group-hover:text-indigo-300',
-    textColor: 'text-indigo-100',
-    dot: 'bg-indigo-600',
+    selected: 'bg-night-800 shadow-xl shadow-rose-warm/10 scale-[1.02] border-rose-warm/60',
+    iconBg: 'bg-rose-warm/20',
+    iconBgHover: 'bg-night-700 group-hover:bg-rose-warm/10',
+    iconColor: 'text-rose-warm',
+    iconColorDefault: 'text-cream-300 group-hover:text-rose-warm',
+    glow: 'from-rose-warm/10',
+    dot: 'bg-rose-warm',
   },
   'Surprise Me': {
-    selected: 'bg-gradient-to-br from-pink-600 to-pink-800 shadow-xl shadow-pink-500/30 scale-105 border-pink-400',
-    gradient: 'from-pink-500/20',
-    iconBg: 'bg-pink-600/20 group-hover:bg-pink-600/30',
-    iconColor: 'text-pink-400 group-hover:text-pink-300',
-    textColor: 'text-pink-100',
-    dot: 'bg-pink-600',
+    selected: 'bg-night-800 shadow-xl shadow-peach-warm/10 scale-[1.02] border-peach-warm/60',
+    iconBg: 'bg-peach-warm/20',
+    iconBgHover: 'bg-night-700 group-hover:bg-peach-warm/10',
+    iconColor: 'text-peach-warm',
+    iconColorDefault: 'text-cream-300 group-hover:text-peach-warm',
+    glow: 'from-peach-warm/10',
+    dot: 'bg-peach-warm',
   },
 };
 
@@ -68,27 +71,27 @@ const modes = [
     id: 'Quick Match' as RecommendationMode,
     icon: Zap,
     title: 'Quick Match',
-    description: 'Fast recommendations based on time and platform',
+    description: 'Fast pick, perfect for right now',
   },
   {
     id: 'Deep Match' as RecommendationMode,
     icon: Target,
     title: 'Deep Match',
-    description: 'Detailed analysis of mood and genre preferences',
+    description: 'Let\u2019s really think about it',
   },
   {
     id: 'Surprise Me' as RecommendationMode,
     icon: Sparkles,
     title: 'Surprise Me',
-    description: 'Unexpected picks with a touch of randomness',
+    description: 'Close your eyes\u2026',
   },
 ];
 
 export default function ModeSelector({ value, onChange }: ModeSelectorProps) {
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-white mb-6 text-center">
-        How should we match?
+      <h2 className="text-2xl font-serif font-bold text-cream-50 mb-8 text-center">
+        How should I match you?
       </h2>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -102,62 +105,57 @@ export default function ModeSelector({ value, onChange }: ModeSelectorProps) {
               key={mode.id}
               onClick={() => onChange(mode.id)}
               className={`
-                group relative overflow-hidden rounded-xl p-6
+                group relative overflow-hidden rounded-3xl p-6
                 transition-all duration-300 ease-out
                 ${isSelected
                   ? styles.selected
-                  : 'bg-slate-800 hover:bg-slate-750 hover:scale-102 shadow-md hover:shadow-lg'
+                  : 'bg-night-900 hover:bg-night-850 hover:scale-[1.01] shadow-md hover:shadow-lg border-night-700 hover:border-night-600'
                 }
-                border-2 ${!isSelected ? 'border-slate-700 hover:border-slate-600' : ''}
+                border
               `}
               aria-pressed={isSelected}
               aria-label={`Select ${mode.title} mode`}
             >
-              {/* Background gradient effect */}
+              {/* Warm glow */}
               <div className={`
-                absolute inset-0 bg-gradient-to-br ${styles.gradient} to-transparent
-                opacity-0 group-hover:opacity-100 transition-opacity duration-300
-                ${isSelected ? 'opacity-100' : ''}
+                absolute inset-0 rounded-3xl bg-gradient-to-br ${styles.glow} to-transparent
+                transition-opacity duration-300
+                ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-60'}
               `} />
               
-              {/* Content */}
               <div className="relative z-10 flex flex-col items-center gap-3 text-center">
                 <div className={`
-                  p-3 rounded-full transition-all duration-300
-                  ${isSelected
-                    ? 'bg-white/20'
-                    : styles.iconBg
-                  }
+                  p-3 rounded-2xl transition-all duration-300
+                  ${isSelected ? styles.iconBg : styles.iconBgHover}
                 `}>
                   <Icon 
                     className={`
                       w-8 h-8 transition-colors duration-300
-                      ${isSelected ? 'text-white' : styles.iconColor}
+                      ${isSelected ? styles.iconColor : styles.iconColorDefault}
                     `}
                   />
                 </div>
                 
                 <div>
                   <h3 className={`
-                    text-lg font-bold mb-1 transition-colors duration-300
-                    ${isSelected ? 'text-white' : 'text-slate-100 group-hover:text-white'}
+                    text-lg font-serif font-bold mb-1 transition-colors duration-300
+                    ${isSelected ? 'text-cream-50' : 'text-cream-100 group-hover:text-cream-50'}
                   `}>
                     {mode.title}
                   </h3>
                   <p className={`
                     text-xs transition-colors duration-300
-                    ${isSelected ? styles.textColor : 'text-slate-400 group-hover:text-slate-300'}
+                    ${isSelected ? 'text-cream-300' : 'text-cream-400 group-hover:text-cream-300'}
                   `}>
                     {mode.description}
                   </p>
                 </div>
               </div>
               
-              {/* Selected indicator */}
               {isSelected && (
                 <div className="absolute top-3 right-3">
-                  <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
-                    <div className={`w-2.5 h-2.5 ${styles.dot} rounded-full`} />
+                  <div className={`w-4 h-4 ${styles.dot} rounded-full flex items-center justify-center`}>
+                    <div className="w-1.5 h-1.5 bg-night-950 rounded-full" />
                   </div>
                 </div>
               )}
@@ -166,13 +164,12 @@ export default function ModeSelector({ value, onChange }: ModeSelectorProps) {
         })}
       </div>
       
-      {/* Mode explanation */}
       {value && (
-        <div className="mt-6 p-4 bg-slate-800/50 rounded-lg border border-slate-700">
-          <p className="text-sm text-slate-300 text-center">
-            {value === 'Quick Match' && '⚡ Prioritizes time availability and platform compatibility for instant matches.'}
-            {value === 'Deep Match' && '🎯 Analyzes your mood and genre preferences for highly personalized recommendations.'}
-            {value === 'Surprise Me' && '✨ Adds variety to your recommendations with unexpected but fitting suggestions.'}
+        <div className="mt-6 p-4 bg-night-900/80 rounded-2xl border border-night-700">
+          <p className="text-sm text-cream-300 text-center font-serif italic">
+            {value === 'Quick Match' && 'Prioritizes time and platform — for when you just want something now.'}
+            {value === 'Deep Match' && 'Digs into your mood and taste — for the perfect fit.'}
+            {value === 'Surprise Me' && 'A little randomness goes a long way — trust me on this one.'}
           </p>
         </div>
       )}

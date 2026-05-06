@@ -22,6 +22,7 @@
 
 'use client';
 
+import Lumi from './Lumi';
 import RecommendationCard from './RecommendationCard';
 import { GameRecommendation, MovieRecommendation } from '@/lib/types';
 
@@ -48,8 +49,8 @@ export default function ResultsSection({
   if (isLoading) {
     return (
       <div className="text-center py-16">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-2 border-gray-700 border-t-white mb-4"></div>
-        <p className="text-gray-400 text-lg">Finding your perfect recommendations...</p>
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-2 border-night-700 border-t-amber-warm mb-6"></div>
+        <p className="text-cream-300 text-lg font-serif italic">Stirring up something good…</p>
       </div>
     );
   }
@@ -57,9 +58,12 @@ export default function ResultsSection({
   // Error state
   if (error) {
     return (
-      <div className="bg-red-900/10 border border-red-800 rounded-lg p-6 text-center">
-        <p className="text-red-400 font-medium">{error}</p>
-        <p className="text-gray-500 text-sm mt-2">Please try again or adjust your preferences.</p>
+      <div className="space-y-4">
+        <Lumi message="Something's off — let's try again." size="sm" />
+        <div className="bg-rose-warm/10 border border-rose-warm/30 rounded-2xl p-6 text-center">
+          <p className="text-rose-warm font-medium">{error}</p>
+          <p className="text-cream-400 text-sm mt-2">Adjust your preferences or give it another go.</p>
+        </div>
       </div>
     );
   }
@@ -72,10 +76,11 @@ export default function ResultsSection({
   return (
     <div>
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-white mb-2">
-          Your Recommended Picks
+        <Lumi message="Here's what I found for you tonight." size="sm" />
+        <h2 className="text-3xl font-serif font-bold text-cream-50 mt-6 mb-2">
+          Tonight&apos;s picks, served warm
         </h2>
-        <p className="text-gray-500">Based on your preferences</p>
+        <p className="text-cream-400">Based on your mood and preferences</p>
       </div>
 
       <div className="space-y-6">
@@ -95,9 +100,9 @@ export default function ResultsSection({
         <div className="mt-8 text-center">
           <button
             onClick={onRefine}
-            className="px-6 py-3 bg-gray-800 text-white rounded-lg border border-gray-700 hover:border-white transition-all"
+            className="px-6 py-3 bg-night-800 text-cream-200 rounded-full border border-night-700 hover:border-amber-warm/40 hover:text-amber-warm transition-all"
           >
-            Refine Recommendations
+            Show me different ones
           </button>
         </div>
       )}

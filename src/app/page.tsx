@@ -1,35 +1,7 @@
-/**
- * FILE: page.tsx
- * PURPOSE: Main application page with complete user flow
- * 
- * FLOW:
- * Step 1: Category selection (games vs movies)
- * Step 2: Mode selection (Quick/Deep/Surprise)
- * Step 3: Preference form
- * Step 4: Results display with taste profile
- * 
- * STATE MANAGEMENT:
- * - currentStep: Which step user is on
- * - category: Selected category
- * - mode: Selected mode
- * - preferences: User preferences
- * - recommendations: API results
- * - tasteProfile: Generated profile
- * - feedback: Liked/disliked/saved items
- * - loading/error states
- * 
- * DEPENDENCIES:
- * - All components from previous sprints
- * - types.ts
- * - storage.ts
- * 
- * STATUS: Complete
- * DO NOT MODIFY: No - Update as needed
- */
-
 'use client';
 
 import { useState } from 'react';
+import Lumi from '@/components/Lumi';
 import CategorySelector from '@/components/CategorySelector';
 import ModeSelector from '@/components/ModeSelector';
 import PreferenceForm from '@/components/PreferenceForm';
@@ -246,65 +218,82 @@ export default function Home() {
 
 
   return (
-    <main className="min-h-screen py-16 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+        {/* Hero Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-5xl md:text-6xl font-serif font-bold text-cream-50 mb-3 tracking-tight">
             MoodQuest
           </h1>
-          <p className="text-xl text-gray-400">
-            Find your next game or movie based on your mood
+          <p className="text-lg text-cream-300 font-serif italic">
+            Cozy picks for whatever you&apos;re feeling tonight.
           </p>
         </div>
 
         {/* Progress Indicator */}
         {currentStep > 1 && (
-          <div className="mb-8">
-            <div className="flex items-center justify-center gap-2 mb-4">
+          <div className="mb-10">
+            <div className="flex items-center justify-center gap-2 mb-3">
               {[1, 2, 3, 4].map((step) => (
                 <div
                   key={step}
-                  className={`h-2 w-16 rounded-full ${
-                    step <= currentStep ? 'bg-white' : 'bg-gray-800'
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    step <= currentStep 
+                      ? 'w-10 bg-amber-warm' 
+                      : 'w-6 bg-night-700'
                   }`}
                 />
               ))}
             </div>
             <button
               onClick={handleStartOver}
-              className="block mx-auto text-sm text-gray-500 hover:text-white transition-colors"
+              className="block mx-auto text-sm text-cream-400 hover:text-amber-warm transition-colors"
             >
-              Start Over
+              Start fresh
             </button>
           </div>
         )}
 
         {/* Step 1: Category Selection */}
         {currentStep === 1 && (
-          <CategorySelector value={category} onChange={handleCategorySelect} />
+          <div className="animate-fade-in">
+            <div className="mb-8">
+              <Lumi message="Hey there! Take your time — I'll be here." size="sm" />
+            </div>
+            <CategorySelector value={category} onChange={handleCategorySelect} />
+          </div>
         )}
 
         {/* Step 2: Mode Selection */}
         {currentStep === 2 && (
-          <ModeSelector value={mode} onChange={handleModeSelect} />
+          <div className="animate-fade-in">
+            <div className="mb-8">
+              <Lumi message="No wrong answer here." size="sm" />
+            </div>
+            <ModeSelector value={mode} onChange={handleModeSelect} />
+          </div>
         )}
 
         {/* Step 3: Preference Form */}
         {currentStep === 3 && category && mode && (
-          <div className="bg-gray-900 rounded-lg border border-gray-800 p-8">
-            <PreferenceForm
-              category={category}
-              mode={mode}
-              onSubmit={handleFormSubmit}
-              isLoading={isLoading}
-            />
+          <div className="animate-fade-in">
+            <div className="mb-8">
+              <Lumi message="Tell me a little more about what you're in the mood for…" size="sm" />
+            </div>
+            <div className="bg-night-900 rounded-3xl border border-night-700 p-8">
+              <PreferenceForm
+                category={category}
+                mode={mode}
+                onSubmit={handleFormSubmit}
+                isLoading={isLoading}
+              />
+            </div>
           </div>
         )}
 
         {/* Step 4: Results */}
         {currentStep === 4 && (
-          <div className="space-y-8">
+          <div className="space-y-8 animate-fade-in">
             {tasteProfile && <TasteProfile profile={tasteProfile} />}
             
             <ResultsSection
@@ -317,7 +306,6 @@ export default function Home() {
               onRefine={handleRefine}
             />
 
-            {/* History Sidebar */}
             <div className="mt-12">
               <RecommendationHistory />
             </div>
@@ -325,8 +313,8 @@ export default function Home() {
         )}
 
         {/* Footer */}
-        <footer className="mt-24 text-center text-gray-600 text-sm">
-          <p>Powered by OpenAI • Built with Next.js & TypeScript</p>
+        <footer className="mt-20 text-center text-cream-400/60 text-sm">
+          <p className="font-serif italic">Powered by OpenAI • Built with care</p>
         </footer>
       </div>
     </main>

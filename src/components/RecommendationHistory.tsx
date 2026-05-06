@@ -34,7 +34,7 @@ export default function RecommendationHistory() {
   }, []);
 
   const handleClear = () => {
-    if (confirm('Are you sure you want to clear your recommendation history?')) {
+    if (confirm('Clear your recommendation history?')) {
       clearHistory();
       setHistory([]);
     }
@@ -42,43 +42,46 @@ export default function RecommendationHistory() {
 
   if (history.length === 0) {
     return (
-      <div className="bg-gray-900 rounded-lg border border-gray-800 p-6">
-        <h3 className="text-xl font-bold text-white mb-4">Recommendation History</h3>
-        <p className="text-gray-500 text-center py-8">No recommendation history yet</p>
+      <div className="bg-night-900 rounded-3xl border border-night-700 p-6">
+        <h3 className="text-lg font-serif font-bold text-cream-50 mb-4">Things you&apos;ve explored</h3>
+        <p className="text-cream-400/60 text-center py-6 text-sm">Nothing here yet — your picks will show up after your first session.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-900 rounded-lg border border-gray-800 p-6">
+    <div className="bg-night-900 rounded-3xl border border-night-700 p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-bold text-white">Recommendation History</h3>
+        <h3 className="text-lg font-serif font-bold text-cream-50">Things you&apos;ve explored</h3>
         <button
           onClick={handleClear}
-          className="text-sm text-gray-500 hover:text-red-400 transition-colors"
+          className="text-xs text-cream-400/60 hover:text-rose-warm transition-colors"
         >
-          Clear History
+          Clear
         </button>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {history.map((session) => (
-          <div key={session.id} className="border-b border-gray-800 pb-4 last:border-0">
-            <div className="flex items-start justify-between mb-2">
-              <div>
-                <div className="text-sm font-medium text-white">
-                  {session.category === 'game' ? '🎮' : '🎬'} {session.topRecommendation}
+          <div key={session.id} className="border-b border-night-700 pb-3 last:border-0 last:pb-0">
+            <div className="flex items-start gap-3">
+              <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${
+                session.category === 'game' ? 'bg-amber-warm' : 'bg-rose-warm'
+              }`} />
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium text-cream-100 truncate">
+                  {session.topRecommendation}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
-                  {new Date(session.date).toLocaleDateString()} • {session.mood}
+                <div className="text-xs text-cream-400/60 mt-0.5">
+                  {new Date(session.date).toLocaleDateString()} · {session.mood}
                 </div>
+                {session.savedTitles.length > 0 && (
+                  <div className="text-xs text-cream-400/40 mt-1">
+                    Saved: {session.savedTitles.join(', ')}
+                  </div>
+                )}
               </div>
             </div>
-            {session.savedTitles.length > 0 && (
-              <div className="text-xs text-gray-600">
-                Saved: {session.savedTitles.join(', ')}
-              </div>
-            )}
           </div>
         ))}
       </div>

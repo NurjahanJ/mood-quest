@@ -1,52 +1,54 @@
 @tailwind base;
-
 @tailwind components;
-
 @tailwind utilities;
 
-
-
 :root {
-
-  --foreground-rgb: 255, 255, 255;
-
-  --background-start-rgb: 10, 10, 15;
-
-  --background-end-rgb: 20, 20, 30;
-
+  --night-950: #1a1424;
+  --night-900: #241a32;
+  --amber-warm: #f5a35a;
+  --cream-50: #fef6e8;
 }
-
-
 
 body {
-
-  color: rgb(var(--foreground-rgb));
-
-  background: linear-gradient(
-
-      to bottom,
-
-      transparent,
-
-      rgb(var(--background-end-rgb))
-
-    )
-
-    rgb(var(--background-start-rgb));
-
+  color: var(--cream-50);
+  background: var(--night-950);
   min-height: 100vh;
-
+  position: relative;
 }
 
+/* Ambient warm glow at top of page */
+body::before {
+  content: '';
+  position: fixed;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 60%;
+  background: radial-gradient(ellipse at center, #f5a35a12 0%, #e87a8c08 30%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
 
+/* Subtle vignette edges */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, #1a142480 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure content is above ambient layers */
+body > * {
+  position: relative;
+  z-index: 1;
+}
 
 @layer utilities {
-
   .text-balance {
-
     text-wrap: balance;
-
   }
-
 }
 

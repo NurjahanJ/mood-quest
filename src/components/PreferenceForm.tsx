@@ -86,27 +86,15 @@ export default function PreferenceForm({
   const [avoidInput, setAvoidInput] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  /**
-   * Handle form submission
-   * 
-   * PROCESS:
-   * 1. Parse avoid input (comma-separated)
-   * 2. Build preferences object
-   * 3. Validate preferences
-   * 4. Call onSubmit if valid
-   * 5. Show error if invalid
-   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    // Parse avoid input
     const avoid = avoidInput
       .split(',')
       .map(item => item.trim())
       .filter(item => item.length > 0);
 
-    // Build preferences object
     const preferences: Partial<UserPreferences> = {
       type: category,
       mode: mode,
@@ -115,7 +103,6 @@ export default function PreferenceForm({
       avoid
     };
 
-    // Add category-specific fields
     if (category === 'games') {
       preferences.platform = platform as Platform;
       preferences.playStyle = playStyle as PlayStyle;
@@ -129,52 +116,64 @@ export default function PreferenceForm({
       }
     }
 
-    // Validate
     const validation = validatePreferences(preferences);
     if (!validation.isValid) {
       setError(validation.error || 'Please fill in all required fields');
       return;
     }
 
-    // Submit
     onSubmit(preferences as UserPreferences);
   };
 
-  // Mood options based on category
+  // Mood options with emoji prefixes
   const moodOptions = category === 'games'
-    ? ['Relaxing', 'Cozy', 'Competitive', 'Story-driven', 'Strategic', 'Chaotic']
-    : ['Comforting', 'Funny', 'Emotional', 'Suspenseful', 'Thought-provoking', 'Adventurous', 'Romantic', 'Dark'];
+    ? [
+        { label: '😌 Relaxing', value: 'Relaxing' },
+        { label: '🛋️ Cozy', value: 'Cozy' },
+        { label: '🔥 Competitive', value: 'Competitive' },
+        { label: '📖 Story-driven', value: 'Story-driven' },
+        { label: '🧠 Strategic', value: 'Strategic' },
+        { label: '💥 Chaotic', value: 'Chaotic' },
+      ]
+    : [
+        { label: '🤗 Comforting', value: 'Comforting' },
+        { label: '😄 Funny', value: 'Funny' },
+        { label: '🥺 Emotional', value: 'Emotional' },
+        { label: '😰 Suspenseful', value: 'Suspenseful' },
+        { label: '💭 Thought-provoking', value: 'Thought-provoking' },
+        { label: '🌍 Adventurous', value: 'Adventurous' },
+        { label: '💕 Romantic', value: 'Romantic' },
+        { label: '🌑 Dark', value: 'Dark' },
+      ];
 
-  // Time options based on category
   const timeOptions = category === 'games'
     ? ['Under 30 minutes', 'About 1 hour', 'Several hours']
     : ['Under 90 minutes', 'About 2 hours', 'Long movie is okay'];
 
-  // Genre options based on category
   const genreOptions = category === 'games'
     ? ['RPG', 'Puzzle', 'Simulation', 'Adventure', 'Action', 'Strategy', 'No preference']
     : ['Comedy', 'Drama', 'Romance', 'Thriller', 'Sci-Fi', 'Fantasy', 'Animation', 'Documentary', 'Horror', 'No preference'];
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-7">
       {/* Mood Selection */}
       <div>
-        <label className="block text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
-          Current Mood <span className="text-red-400">*</span>
+        <label className="block text-sm font-medium text-cream-300 mb-3">
+          How are you feeling? <span className="text-amber-warm">*</span>
         </label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {moodOptions.map((moodOption) => (
             <button
-              key={moodOption}
+              key={moodOption.value}
               type="button"
-              onClick={() => setMood(moodOption as Mood)}
-              className={`px-4 py-3 rounded-lg border transition-all duration-200 text-sm font-medium ${
-                mood === moodOption
-                  ? 'border-white bg-white/10 text-white'
-                  : 'border-gray-700 bg-gray-800/50 text-gray-400 hover:border-gray-600 hover:text-gray-300'
+              onClick={() => setMood(moodOption.value as Mood)}
+              className={`px-4 py-3 rounded-2xl border transition-all duration-200 text-sm font-medium ${
+                mood === moodOption.value
+                  ? 'border-amber-warm bg-amber-warm/15 text-cream-50'
+                  : 'border-night-700 bg-night-800/50 text-cream-400 hover:border-amber-warm/30 hover:text-cream-200'
               }`}
             >
-              {moodOption}
+              {moodOption.label}
             </button>
           ))}
         </div>
@@ -182,16 +181,16 @@ export default function PreferenceForm({
 
       {/* Time Available */}
       <div>
-        <label className="block text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
-          Available Time <span className="text-red-400">*</span>
+        <label className="block text-sm font-medium text-cream-300 mb-3">
+          How much time do you have? <span className="text-amber-warm">*</span>
         </label>
         <select
           value={timeAvailable}
           onChange={(e) => setTimeAvailable(e.target.value as TimeAvailable)}
-          className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-white focus:border-transparent transition-all"
+          className="w-full px-4 py-3 bg-night-800 border border-night-700 rounded-2xl text-cream-50 focus:ring-2 focus:ring-amber-warm/50 focus:border-amber-warm/50 transition-all"
           required
         >
-          <option value="">Select duration</option>
+          <option value="">Pick a timeframe</option>
           {timeOptions.map((option) => (
             <option key={option} value={option}>{option}</option>
           ))}
@@ -202,16 +201,16 @@ export default function PreferenceForm({
       {category === 'games' && (
         <>
           <div>
-            <label className="block text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
-              Platform <span className="text-red-400">*</span>
+            <label className="block text-sm font-medium text-cream-300 mb-3">
+              What platform? <span className="text-amber-warm">*</span>
             </label>
             <select
               value={platform}
               onChange={(e) => setPlatform(e.target.value as Platform)}
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-white focus:border-transparent transition-all"
+              className="w-full px-4 py-3 bg-night-800 border border-night-700 rounded-2xl text-cream-50 focus:ring-2 focus:ring-amber-warm/50 focus:border-amber-warm/50 transition-all"
               required
             >
-              <option value="">Select platform</option>
+              <option value="">Pick your platform</option>
               <option value="PC">PC</option>
               <option value="Nintendo Switch">Nintendo Switch</option>
               <option value="PlayStation">PlayStation</option>
@@ -221,8 +220,8 @@ export default function PreferenceForm({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
-              Play Style <span className="text-red-400">*</span>
+            <label className="block text-sm font-medium text-cream-300 mb-3">
+              Playing with others? <span className="text-amber-warm">*</span>
             </label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {(['Solo', 'Co-op', 'Multiplayer', 'Either'] as PlayStyle[]).map((style) => (
@@ -230,10 +229,10 @@ export default function PreferenceForm({
                   key={style}
                   type="button"
                   onClick={() => setPlayStyle(style)}
-                  className={`px-4 py-3 rounded-lg border transition-all duration-200 text-sm font-medium ${
+                  className={`px-4 py-3 rounded-2xl border transition-all duration-200 text-sm font-medium ${
                     playStyle === style
-                      ? 'border-white bg-white/10 text-white'
-                      : 'border-gray-700 bg-gray-800/50 text-gray-400 hover:border-gray-600 hover:text-gray-300'
+                      ? 'border-amber-warm bg-amber-warm/15 text-cream-50'
+                      : 'border-night-700 bg-night-800/50 text-cream-400 hover:border-amber-warm/30 hover:text-cream-200'
                   }`}
                 >
                   {style}
@@ -247,36 +246,36 @@ export default function PreferenceForm({
       {/* Movie-Specific Fields */}
       {category === 'movies' && (
         <div>
-          <label className="block text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
-            Streaming Platform <span className="text-red-400">*</span>
+          <label className="block text-sm font-medium text-cream-300 mb-3">
+            Where are you watching? <span className="text-amber-warm">*</span>
           </label>
           <select
             value={streamingPlatform}
             onChange={(e) => setStreamingPlatform(e.target.value as StreamingPlatform)}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-white focus:border-transparent transition-all"
+            className="w-full px-4 py-3 bg-night-800 border border-night-700 rounded-2xl text-cream-50 focus:ring-2 focus:ring-amber-warm/50 focus:border-amber-warm/50 transition-all"
             required
           >
-            <option value="">Select platform</option>
+            <option value="">Pick your platform</option>
             <option value="Netflix">Netflix</option>
             <option value="Amazon Prime">Amazon Prime</option>
             <option value="Disney+">Disney+</option>
             <option value="HBO Max">HBO Max</option>
             <option value="Hulu">Hulu</option>
             <option value="Apple TV+">Apple TV+</option>
-            <option value="Any">Any Platform</option>
+            <option value="Any">Anywhere is fine</option>
           </select>
         </div>
       )}
 
       {/* Preferred Genre */}
       <div>
-        <label className="block text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
-          Preferred Genre
+        <label className="block text-sm font-medium text-cream-300 mb-3">
+          Any genre preference?
         </label>
         <select
           value={preferredGenre}
           onChange={(e) => setPreferredGenre(e.target.value as Genre | MovieGenre)}
-          className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-white focus:border-transparent transition-all"
+          className="w-full px-4 py-3 bg-night-800 border border-night-700 rounded-2xl text-cream-50 focus:ring-2 focus:ring-amber-warm/50 focus:border-amber-warm/50 transition-all"
         >
           {genreOptions.map((option) => (
             <option key={option} value={option}>{option}</option>
@@ -286,25 +285,25 @@ export default function PreferenceForm({
 
       {/* Avoid Input */}
       <div>
-        <label className="block text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
-          Things to Avoid
+        <label className="block text-sm font-medium text-cream-300 mb-3">
+          Anything to steer clear of?
         </label>
         <input
           type="text"
           value={avoidInput}
           onChange={(e) => setAvoidInput(e.target.value)}
           placeholder={category === 'games' ? 'e.g., horror, violence, grinding' : 'e.g., sad endings, violence, slow pacing'}
-          className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-white focus:border-transparent transition-all"
+          className="w-full px-4 py-3 bg-night-800 border border-night-700 rounded-2xl text-cream-50 placeholder-cream-400/40 focus:ring-2 focus:ring-amber-warm/50 focus:border-amber-warm/50 transition-all"
         />
-        <p className="mt-2 text-xs text-gray-500">
+        <p className="mt-2 text-xs text-cream-400/60">
           Separate multiple items with commas
         </p>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-900/20 border border-red-800 rounded-lg p-4">
-          <p className="text-red-400 text-sm">{error}</p>
+        <div className="bg-rose-warm/10 border border-rose-warm/30 rounded-2xl p-4">
+          <p className="text-rose-warm text-sm">{error}</p>
         </div>
       )}
 
@@ -312,7 +311,7 @@ export default function PreferenceForm({
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full px-6 py-4 bg-white text-gray-900 font-semibold rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-white/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+        className="w-full px-6 py-4 bg-gradient-to-r from-amber-warm to-peach-warm text-night-950 font-semibold rounded-full hover:opacity-90 focus:ring-4 focus:ring-amber-warm/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-amber-warm/20"
       >
         {isLoading ? (
           <span className="flex items-center justify-center gap-3">
@@ -320,10 +319,10 @@ export default function PreferenceForm({
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
             </svg>
-            Finding recommendations...
+            Lumi is thinking…
           </span>
         ) : (
-          `Get ${category === 'games' ? 'Game' : 'Movie'} Recommendations`
+          'Find me something'
         )}
       </button>
     </form>
