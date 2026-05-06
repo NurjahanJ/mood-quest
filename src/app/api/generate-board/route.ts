@@ -23,6 +23,13 @@ const FALLBACK_BOARDS: Record<string, MoodBoard> = {
     coreEmotions: ['melancholy', 'wonder', 'determination', 'loneliness', 'love'],
     atmosphere: 'A windswept world where beauty hides behind danger. Candlelit taverns contrast with monster-haunted bogs. Every choice carries weight.',
     soundtrackMood: 'Slavic folk instruments over brooding orchestral swells. Percussive combat themes giving way to haunting female vocals.',
+    playlist: [
+      { title: 'The Wolven Storm', artist: 'Marcin Przybyłowicz' },
+      { title: 'Silver for Monsters', artist: 'Percival' },
+      { title: 'Farewell Old Friend', artist: 'Mikolai Stroinski' },
+      { title: 'The Fields of Ard Skellig', artist: 'Percival' },
+      { title: 'Lullaby of Woe', artist: 'Ashley Serena' },
+    ],
     bestSetting: 'Late evening, rain on the window, headphones on, nothing else scheduled for hours.',
     textures: ['cracked leather', 'wet stone', 'rusted iron', 'ancient parchment', 'dense fog'],
     similarVibes: [
@@ -47,6 +54,13 @@ const FALLBACK_BOARDS: Record<string, MoodBoard> = {
     coreEmotions: ['wonder', 'nostalgia', 'bravery', 'longing', 'gentle fear'],
     atmosphere: 'A dreamlike world that feels both alien and deeply familiar. Steam rises from enchanted waters. Every spirit has a story.',
     soundtrackMood: 'Joe Hisaishi piano themes — delicate, sweeping, bittersweet. Moments of playful whimsy dissolving into orchestral emotion.',
+    playlist: [
+      { title: 'One Summer\'s Day', artist: 'Joe Hisaishi' },
+      { title: 'The Name of Life', artist: 'Joe Hisaishi' },
+      { title: 'Reprise', artist: 'Joe Hisaishi' },
+      { title: 'Sixth Station', artist: 'Joe Hisaishi' },
+      { title: 'Always With Me', artist: 'Youmi Kimura' },
+    ],
     bestSetting: 'A rainy afternoon, wrapped in a blanket, with tea. Let yourself feel small.',
     textures: ['warm steam', 'polished wood', 'flowing water', 'silk fabric', 'soft lamplight'],
     similarVibes: [
@@ -78,6 +92,13 @@ function getFallbackBoard(title: string, category: 'game' | 'movie'): MoodBoard 
     coreEmotions: ['curiosity', 'immersion', 'satisfaction', 'connection'],
     atmosphere: `The kind of ${category} that stays with you after it ends. A world you want to return to.`,
     soundtrackMood: 'A blend of ambient textures and emotional melodies that pull you deeper in.',
+    playlist: [
+      { title: 'Holocene', artist: 'Bon Iver' },
+      { title: 'Intro', artist: 'The xx' },
+      { title: 'Sunset Lover', artist: 'Petit Biscuit' },
+      { title: 'Re: Stacks', artist: 'Bon Iver' },
+      { title: 'Bloom', artist: 'Radiohead' },
+    ],
     bestSetting: 'Whenever you need to disappear into something for a while.',
     textures: ['soft glow', 'deep shadow', 'warm light', 'quiet stillness'],
     similarVibes: [
@@ -121,6 +142,9 @@ RESPONSE FORMAT (strict JSON):
     "coreEmotions": ["emotion1", "emotion2", "emotion3", "emotion4"],
     "atmosphere": "2-3 sentence atmospheric description",
     "soundtrackMood": "Description of the musical/audio vibe",
+    "playlist": [
+      { "title": "Song name", "artist": "Artist name" }
+    ],
     "bestSetting": "When and where to best experience this",
     "textures": ["texture1", "texture2", "texture3", "texture4"],
     "similarVibes": [
@@ -135,6 +159,7 @@ RULES:
 - coreEmotions: 4 primary emotions it evokes
 - textures: 4 tactile/sensory descriptors
 - similarVibes: 4 items from different categories (game, movie, music, art, or book)
+- playlist: exactly 5 real songs/tracks that match the mood (must be real songs by real artists)
 - atmosphere: Be evocative and specific, not generic
 - tagline: Short, punchy, memorable
 - All hex codes must be valid 6-digit hex colors

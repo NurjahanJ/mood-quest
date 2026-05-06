@@ -105,6 +105,17 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
           <p className="text-cream-200 text-sm leading-relaxed">
             {board.soundtrackMood}
           </p>
+          {board.playlist && board.playlist.length > 0 && (
+            <ol className="mt-4 space-y-2 border-t border-night-700 pt-4">
+              {board.playlist.map((track, i) => (
+                <li key={i} className="flex items-baseline gap-2 text-sm">
+                  <span className="text-cream-400/50 text-xs w-4 shrink-0">{i + 1}.</span>
+                  <span className="text-cream-100 font-medium">{track.title}</span>
+                  <span className="text-cream-400">— {track.artist}</span>
+                </li>
+              ))}
+            </ol>
+          )}
         </section>
 
         {/* Best Setting */}

@@ -7,6 +7,11 @@ export interface ColorSwatch {
   name: string;
 }
 
+export interface SoundtrackTrack {
+  title: string;
+  artist: string;
+}
+
 export interface SimilarVibe {
   title: string;
   category: 'game' | 'movie' | 'music' | 'art' | 'book';
@@ -21,6 +26,7 @@ export interface MoodBoard {
   coreEmotions: string[];
   atmosphere: string;
   soundtrackMood: string;
+  playlist: SoundtrackTrack[];
   bestSetting: string;
   textures: string[];
   similarVibes: SimilarVibe[];
