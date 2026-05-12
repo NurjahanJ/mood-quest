@@ -361,11 +361,10 @@ MIT License - feel free to use this project for learning
 
 ## 👤 Author
 
-Built by [Your Name] as a portfolio project
+Built by Nurjahan Jhorna as a portfolio project
 
-- Portfolio: [your-portfolio.com](https://your-portfolio.com)
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Name](https://linkedin.com/in/yourname)
+- Portfolio: [your-portfolio.com](https://nurjahanj.vercel.app/)
+- GitHub: [@yourusername](https://github.com/Nurjahan)
 
 ---
 
