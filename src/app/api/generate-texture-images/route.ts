@@ -30,10 +30,15 @@ export async function POST(request: NextRequest) {
           model: 'gpt-image-2',
           prompt: `Abstract close-up texture photograph: "${texture}". Moody, atmospheric, soft lighting, no text, no words, no letters. Fine art photography style.`,
           size: '1024x1024',
-          quality: 'medium',
+          quality: 'low',
+          output_format: 'webp',
         });
 
-        return response.data?.[0]?.url || null;
+        const b64 = response.data?.[0]?.b64_json;
+        if (b64) {
+          return `data:image/webp;base64,${b64}`;
+        }
+        return null;
       } catch (err) {
         console.error(`Failed to generate image for texture "${texture}":`, err);
         return null;
