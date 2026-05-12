@@ -25,7 +25,7 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
     setTextureImages(new Array(count).fill(null));
     setImagesLoading(new Array(count).fill(true));
 
-    board.textures.slice(0, 4).forEach((texture, i) => {
+    const fetchTexture = (texture: string, i: number) => {
       fetch('/api/generate-texture-images', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -51,6 +51,13 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
             });
           }
         });
+    };
+
+    // Stagger requests to stay within rate limits (5 images/min)
+    board.textures.slice(0, 4).forEach((texture, i) => {
+      setTimeout(() => {
+        if (!cancelled) fetchTexture(texture, i);
+      }, i * 15000);
     });
 
     return () => { cancelled = true; };
