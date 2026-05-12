@@ -29,7 +29,6 @@ export async function POST(request: NextRequest) {
         const response = await openai.images.generate({
           model: 'gpt-image-2',
           prompt: `Abstract close-up texture photograph: "${texture}". Moody, atmospheric, soft lighting, no text, no words, no letters. Fine art photography style.`,
-          n: 1,
           size: '1024x1024',
           quality: 'medium',
         });
