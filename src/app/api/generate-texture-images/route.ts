@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
           prompt: `Abstract close-up texture photograph: "${texture}". Moody, atmospheric, soft lighting, no text, no words, no letters. Fine art photography style.`,
           n: 1,
           size: '1024x1024',
-          quality: 'standard',
+          quality: 'medium',
         });
 
         return response.data?.[0]?.url || null;
