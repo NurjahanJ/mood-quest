@@ -15,21 +15,19 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
   const [textureImages, setTextureImages] = useState<(string | null)[]>([]);
   const [imagesLoading, setImagesLoading] = useState<boolean[]>([]);
 
-  // Fetch hero image
+  // Fetch official cover art
   useEffect(() => {
     if (board.heroImage) { setHeroImage(board.heroImage); return; }
 
     let cancelled = false;
     setHeroLoading(true);
 
-    fetch('/api/generate-hero-image', {
+    fetch('/api/fetch-cover-art', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         title: board.title,
         category: board.category,
-        atmosphere: board.atmosphere,
-        aestheticTags: board.aestheticTags,
       }),
     })
       .then((res) => res.json())
@@ -38,7 +36,7 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
       .finally(() => { if (!cancelled) setHeroLoading(false); });
 
     return () => { cancelled = true; };
-  }, [board.title, board.category, board.atmosphere, board.aestheticTags, board.heroImage]);
+  }, [board.title, board.category, board.heroImage]);
 
   // Fetch texture images
   useEffect(() => {
