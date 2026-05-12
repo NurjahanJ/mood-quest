@@ -1,27 +1,47 @@
-# MoodQuest: 
-https://moodquest-ai.netlify.app/
+# MoodQuest
 
 **AI-Powered Mood Board Generator & Game/Movie Recommendation Engine**
 
-MoodQuest is a dual-mode creative tool that generates rich, visual mood boards for games and movies using AI, and provides personalized recommendations based on your mood, time, and preferences. Built to demonstrate AI Product Engineering skills.
+MoodQuest is a dual-mode creative AI application that generates immersive mood boards for games and movies while also providing personalized recommendations based on mood, time, platform, and user preferences.
+
+Built as an AI Product Engineering portfolio project, MoodQuest combines recommendation systems, multimodal AI generation, structured AI workflows, and cinematic UX design into a cohesive interactive experience.
 
 ---
 
-## 🎯 Why I Built This
+# 🔗 Live Demo
 
-This project showcases skills essential for an AI Product Engineer role:
-
-- **AI Integration:** OpenAI API with structured JSON outputs and image generation
-- **Multimodal AI:** Text generation (GPT-4o-mini) + image generation (gpt-image-2)
-- **Product Thinking:** User-centric design with clear value proposition
-- **System Design:** Fallback logic ensures reliability
-- **Full-Stack Development:** Next.js, TypeScript, API routes
-- **Testing:** Comprehensive test coverage with Vitest
-- **Code Quality:** Well-documented, maintainable code
+https://moodquest-ai.netlify.app/
 
 ---
 
-## 📋 Job Description Research
+# 💻 GitHub Repository
+
+https://github.com/YOUR_USERNAME/moodquest
+
+---
+
+# 🎯 Why I Built This
+
+This project was built to explore what modern AI-powered products can feel like beyond simple chatbot interactions.
+
+Most recommendation systems focus primarily on utility:
+- “What should I watch?”
+- “What should I play?”
+
+But entertainment discovery is often emotional and atmospheric rather than purely logical.
+
+MoodQuest was designed to combine:
+- recommendation systems
+- emotional personalization
+- multimodal AI generation
+- immersive visual design
+- explainable AI outputs
+
+The goal was to create a product that feels cinematic, exploratory, and emotionally driven while also demonstrating real AI Product Engineering skills.
+
+---
+
+# 📋 Job Description Research
 
 As part of this project, I researched real AI-focused engineering roles to better understand the skills, technologies, and workflows expected in modern AI product development.
 
@@ -36,9 +56,11 @@ The goal of this research was to identify:
 - which areas I still need to strengthen
 - how a portfolio project could help bridge those gaps
 
-### Target Role 1: AI Product Engineer
+---
 
-**Common Responsibilities:**
+# 🎯 Target Role 1: AI Product Engineer
+
+## Common Responsibilities
 
 - Building AI-powered product features
 - Integrating LLM APIs into user-facing applications
@@ -49,13 +71,22 @@ The goal of this research was to identify:
 - Improving user experience around AI systems
 - Managing fallback states and AI reliability
 
-**Frequently Requested Skills:**
+## Frequently Requested Skills
 
-TypeScript, React/Next.js, API integration, prompt engineering, structured AI outputs, product thinking, UX-focused engineering, testing and validation, AI workflow design, data handling and personalization systems
+- TypeScript
+- React / Next.js
+- API integration
+- Prompt engineering
+- Structured AI outputs
+- Product thinking
+- UX-focused engineering
+- Testing and validation
+- AI workflow design
+- Personalization systems
 
-**How MoodQuest Connects:**
+## How MoodQuest Connects
 
-MoodQuest directly demonstrates several skills commonly requested in AI Product Engineer roles:
+MoodQuest demonstrates several skills commonly requested in AI Product Engineer roles:
 
 - AI-powered recommendation workflows
 - OpenAI API integration
@@ -68,9 +99,11 @@ MoodQuest directly demonstrates several skills commonly requested in AI Product 
 - Automated testing with Vitest
 - Full-stack application architecture
 
-### Target Role 2: AI Frontend Engineer
+---
 
-**Common Responsibilities:**
+# 🎯 Target Role 2: AI Frontend Engineer
+
+## Common Responsibilities
 
 - Building intuitive interfaces for AI systems
 - Creating responsive frontend architectures
@@ -80,11 +113,20 @@ MoodQuest directly demonstrates several skills commonly requested in AI Product 
 - Improving usability and interaction quality
 - Building polished AI-powered user experiences
 
-**Frequently Requested Skills:**
+## Frequently Requested Skills
 
-React, Next.js, TypeScript, Tailwind CSS, state management, API handling, async UI workflows, frontend architecture, performance optimization, responsive design
+- React
+- Next.js
+- TypeScript
+- Tailwind CSS
+- State management
+- API handling
+- Async UI workflows
+- Frontend architecture
+- Performance optimization
+- Responsive design
 
-**How MoodQuest Connects:**
+## How MoodQuest Connects
 
 MoodQuest demonstrates many frontend engineering concepts related to AI systems:
 
@@ -99,7 +141,9 @@ MoodQuest demonstrates many frontend engineering concepts related to AI systems:
 - Recommendation comparison interfaces
 - Modern frontend component architecture
 
-### Skills Already Represented
+---
+
+# 🧠 Skills Already Represented
 
 Through building MoodQuest, I demonstrated experience with:
 
@@ -116,7 +160,9 @@ Through building MoodQuest, I demonstrated experience with:
 - Automated testing
 - Fallback systems and graceful degradation
 
-### Skills Identified as Missing or Underrepresented
+---
+
+# 📚 Skills Identified as Missing or Underrepresented
 
 After reviewing job descriptions, I identified several areas I still want to improve:
 
@@ -130,237 +176,491 @@ After reviewing job descriptions, I identified several areas I still want to imp
 - Scalable backend systems
 - AI observability and evaluation
 
-### Why MoodQuest Was Chosen
+---
 
-MoodQuest was intentionally designed to help bridge the gap between my current skills and the expectations of modern AI-focused engineering roles.
-
-The project allowed me to explore:
-
-- AI product workflows
-- multimodal AI integration
-- recommendation system design
-- frontend architecture for AI systems
-- structured AI outputs
-- reliability through fallback systems
-- testing and validation
-- user-focused AI experiences
-
-Rather than building a generic chatbot, I wanted to create a more complete AI product experience that combined practical functionality with immersive and interactive design.
+# ✨ Features
 
 ---
 
-## ✨ Features
+## 🎨 AI Mood Board Generator
 
-### Mood Board Generator
-- **AI-generated mood boards** for any game or movie title
-- **Color palette** with 5 poetic named colors and hex codes
-- **Core emotions** and **aesthetic tags** capturing the title's essence
-- **Atmospheric description** — evocative 2-3 sentence scene-setting
-- **Curated music playlist** — 5 real tracks with artist names
-- **AI-generated texture images** — abstract photography via gpt-image-2 for each sensory texture
-- **Best setting** — when and where to experience it
-- **Similar vibes** — cross-media recommendations (games, movies, music, art, books)
-- **Progressive image loading** — board text appears instantly, images fade in as they generate
+Generate immersive mood boards for games and movies using AI.
 
-### Recommendation System
-- **Games:** Platform-specific recommendations (PC, consoles, mobile)
-- **Movies:** Streaming platform recommendations (Netflix, Disney+, etc.)
-- **3 Modes:** Quick Match, Deep Match, Surprise Me
-- Generates taste profiles from preferences
-- Explains why each recommendation fits
-- Provides confidence scores and breakdowns
+### Includes:
+- AI-generated atmosphere descriptions
+- Core emotions and aesthetic themes
+- Curated music playlists
+- Similar media recommendations
+- Poetic color palettes with hex codes
+- Best time and setting for the experience
+- AI-generated texture imagery using gpt-image-2
+- Progressive image loading
 
-### Dual-Mode Landing Page
-- Choose between Mood Board Generator or Recommendation System
-- Conversational UI with Lumi assistant character
-- Seamless switching between modes
-
-### Intelligent Fallback System
-- Local scoring algorithm when AI unavailable
-- Curated fallback mood boards for popular titles
-- 20+ curated games and movies for recommendations
-- Maintains same quality and format
-
-### Professional UI/UX
-- Warm dark theme with custom color system
-- Responsive layout (mobile, tablet, desktop)
-- Loading states and error handling
-- Smooth transitions and progressive rendering
+### Example Outputs
+- emotional themes
+- cinematic atmosphere
+- sensory textures
+- visual tone
+- cross-media inspiration
 
 ---
 
-## 🛠 Tech Stack
+## 🎮 Recommendation System
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **AI Text:** OpenAI GPT-4o-mini (mood boards + recommendations)
-- **AI Images:** OpenAI gpt-image-2 (texture photography)
-- **Icons:** Lucide React
-- **Testing:** Vitest
-- **Hosting:** Netlify
+Personalized game and movie recommendations based on:
+
+- mood
+- available time
+- platform
+- genre preferences
+- play/watch style
+- content to avoid
+
+### Recommendation Modes
+- Quick Match
+- Deep Match
+- Surprise Me
+
+### Recommendation Features
+- confidence scoring
+- taste profiles
+- recommendation refinement
+- structured explanations
+- comparison views
+- recommendation history
 
 ---
 
-## 🚀 Getting Started
+## 🤖 Dual-Mode Landing Experience
 
-### Prerequisites
+Users can choose between:
+- Mood Board Generator
+- Recommendation System
 
-- Node.js 18+ installed
-- OpenAI API key ([Get one here](https://platform.openai.com/api-keys))
+The landing experience includes:
+- conversational UI
+- Lumi AI assistant
+- smooth transitions between workflows
 
-### Installation
+---
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/mood-quest.git
-cd mood-quest
+## ⚙️ Intelligent Fallback System
+
+MoodQuest remains functional even when AI APIs fail.
+
+Fallback systems include:
+- local recommendation scoring
+- curated fallback mood boards
+- structured fallback outputs
+- graceful degradation
+
+This demonstrates reliability-focused product engineering.
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+- Next.js 14 (App Router)
+- React
+- TypeScript
+- Tailwind CSS
+
+## AI Integration
+- OpenAI GPT-4o-mini
+- OpenAI gpt-image-2
+
+## UI & Utilities
+- Lucide React
+- localStorage
+
+## Testing
+- Vitest
+
+## Deployment
+- Netlify
+
+---
+
+# 🏗 System Architecture
+
+```txt
+User Input
+    ↓
+Validation Layer
+    ↓
+GPT-4o-mini
+    ↓
+Structured JSON Response
+    ↓
+Mood Board / Recommendation Renderer
+    ↓
+gpt-image-2 Texture Generation
+    ↓
+Progressive UI Updates
 ```
 
-2. Install dependencies:
+---
+
+# 📖 How It Works
+
+---
+
+## 🎨 Mood Board Flow
+
+1. Choose “Mood Board” mode
+2. Enter a game or movie title
+3. GPT-4o-mini generates:
+   - atmosphere
+   - emotions
+   - textures
+   - playlists
+   - colors
+   - aesthetic tags
+4. gpt-image-2 generates abstract texture imagery inspired by the board’s emotional and aesthetic themes
+5. Images progressively load into the interface
+6. Users explore and generate additional boards
+
+---
+
+## 🎮 Recommendation Flow
+
+1. Choose “Recommendations”
+2. Enter mood and preferences
+3. AI generates:
+   - 3 personalized recommendations
+   - explanations
+   - confidence scores
+   - taste profile
+4. Users can:
+   - like
+   - dislike
+   - save
+   - refine recommendations
+
+---
+
+# 🤖 AI Integration
+
+MoodQuest uses multiple AI workflows.
+
+---
+
+## GPT-4o-mini
+
+Used for:
+- mood board generation
+- recommendation generation
+- structured JSON responses
+- emotional analysis
+- taste profiles
+
+---
+
+## gpt-image-2
+
+Used for:
+- abstract texture imagery
+- aesthetic visualization
+- sensory visual generation
+
+Images are generated asynchronously and progressively rendered for smoother UX.
+
+---
+
+## Structured AI Outputs
+
+One major focus was ensuring AI responses remained:
+- deterministic
+- render-safe
+- structured
+- UI-friendly
+
+Implemented systems include:
+- JSON schema enforcement
+- validation layers
+- structured prompts
+- parsing recovery logic
+- fallback handling
+
+---
+
+# ⚡ Key Engineering Challenges
+
+---
+
+## Structured AI Responses
+
+Ensuring GPT consistently returned valid JSON required:
+- schema enforcement
+- validation systems
+- parsing recovery
+- prompt iteration
+
+---
+
+## Multimodal Coordination
+
+Coordinating:
+- recommendation generation
+- mood board generation
+- image synthesis
+- progressive rendering
+
+required careful asynchronous workflow management.
+
+---
+
+## Progressive Rendering
+
+Mood board text loads first while images generate asynchronously afterward.
+
+This improves:
+- perceived performance
+- responsiveness
+- immersion
+
+---
+
+## AI Reliability
+
+Fallback systems ensure the application remains functional even if:
+- API requests fail
+- JSON parsing fails
+- image generation is unavailable
+
+---
+
+## Rate Limits & Performance
+
+Image generation requests are staggered to:
+- reduce API overload
+- improve UX stability
+- manage latency
+
+---
+
+# 📁 Project Structure
+
+```txt
+src/
+├── app/
+│   ├── api/
+│   │   ├── generate-board/route.ts
+│   │   ├── generate-texture-images/route.ts
+│   │   └── recommend/route.ts
+│   ├── page.tsx
+│   ├── layout.tsx
+│   └── globals.css
+│
+├── components/
+│   ├── MoodBoardDisplay.tsx
+│   ├── MoodBoardInput.tsx
+│   ├── Lumi.tsx
+│   ├── RecommendationForm.tsx
+│   └── RecommendationResults.tsx
+│
+├── lib/
+│   ├── types.ts
+│   ├── validation.ts
+│   ├── gameDataset.ts
+│   ├── movieDataset.ts
+│   ├── scoring.ts
+│   └── fallbackRecommendations.ts
+│
+└── tests/
+```
+
+---
+
+# 🧪 Testing
+
+MoodQuest includes automated testing using Vitest.
+
+## Tested Areas
+
+### Recommendation System
+- recommendation scoring
+- fallback recommendation logic
+- schema validation
+- confidence score validation
+
+### Mood Board System
+- JSON structure validation
+- palette generation
+- playlist formatting
+- texture prompt generation
+
+### Validation
+- required field validation
+- malformed input handling
+- fallback safety
+
+---
+
+# 🎨 Design Decisions
+
+---
+
+## Why Dark Theme?
+
+The dark cinematic interface:
+- reduces eye strain
+- improves immersion
+- enhances atmospheric visuals
+- helps generated imagery stand out
+
+---
+
+## Why Multi-Step Flows?
+
+The structured workflow:
+- reduces cognitive load
+- guides users naturally
+- improves usability
+- creates intentional pacing
+
+---
+
+## Why Progressive Rendering?
+
+Text content loads immediately while images load afterward.
+
+This:
+- improves perceived performance
+- prevents blank waiting states
+- creates smoother interaction
+
+---
+
+## Why Fallback Systems?
+
+AI products must remain functional even when external services fail.
+
+Fallback systems demonstrate:
+- graceful degradation
+- reliability engineering
+- user-focused resilience
+
+---
+
+# 📚 What I Learned
+
+Building MoodQuest taught me that AI product development requires much more than simply integrating APIs.
+
+Key takeaways included:
+- designing structured AI workflows
+- balancing creativity with reliability
+- building graceful fallback systems
+- managing asynchronous AI experiences
+- improving UX around AI-generated content
+- validating structured AI outputs safely
+
+The project also deepened my understanding of how frontend architecture, product thinking, and AI integration work together in modern AI-powered applications.
+
+---
+
+# 🔮 Future Improvements
+
+- Hero image generation for mood boards
+- Saveable mood board galleries
+- Exportable shareable boards
+- User authentication
+- Larger recommendation datasets
+- Real-time AI streaming
+- TMDB and IGDB integrations
+- Collaborative recommendations
+- Embedding-based similarity search
+- Vector database integration
+
+---
+
+# 🌐 Deployment
+
+- Frontend Hosting: Netlify
+- AI APIs: OpenAI
+- Environment Variables: .env.local
+
+---
+
+# 🚀 Getting Started
+
+## Clone Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/moodquest.git
+cd moodquest
+```
+
+---
+
+## Install Dependencies
+
 ```bash
 npm install
 ```
 
-3. Set up environment variables:
-```bash
-cp .env.example .env.local
-```
+---
 
-4. Add your OpenAI API key to `.env.local`:
-```
+## Create Environment Variables
+
+Create `.env.local`
+
+```env
 OPENAI_API_KEY=your_api_key_here
 ```
 
-5. Run the development server:
+---
+
+## Run Development Server
+
 ```bash
 npm run dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000)
+Open:
+http://localhost:3000
 
 ---
 
-## 🧪 Testing
+# 🧪 Run Tests
 
-Run tests:
 ```bash
 npm run test
 ```
 
-Run tests with coverage:
+Coverage:
+
 ```bash
 npm run test:coverage
 ```
 
-Run tests in watch mode:
+Watch mode:
+
 ```bash
 npm run test:watch
 ```
 
 ---
 
-## 📖 How It Works
+# 👤 Author
 
-### Mood Board Flow
+Built by Nurjahan Jhorna as an AI Product Engineering portfolio project.
 
-1. **Choose Mode:** Select "Mood Board" from the landing page
-2. **Enter Title:** Type a game or movie name and select the category
-3. **AI Generates Board:** GPT-4o-mini creates a structured mood board (colors, emotions, atmosphere, playlist, textures, vibes)
-4. **Texture Images Load:** gpt-image-2 generates abstract photography for each texture, appearing progressively
-5. **Explore & Reset:** Browse the board, then create another
+## Links
 
-### Recommendation Flow
+Portfolio:
+https://nurjahanj.vercel.app/
 
-1. **Choose Mode:** Select "Recommendations" from the landing page
-2. **Fill Preferences:** Mood, time, platform, genre, etc.
-3. **Get Recommendations:** AI generates 3 personalized picks with explanations
-
-### AI Integration
-
-The app uses two OpenAI models:
-- **GPT-4o-mini:** Structured JSON generation for mood boards and recommendations
-- **gpt-image-2:** Abstract texture photography (4 images per board, staggered to respect rate limits)
-- **Fallback system** with curated boards and local scoring when AI is unavailable
+GitHub:
+https://github.com/NurjahanJ
 
 ---
 
-## 📁 Project Structure
+# 🙏 Acknowledgments
 
-```
-src/
-├── app/
-│   ├── api/
-│   │   ├── generate-board/route.ts        # Mood board generation (GPT-4o-mini)
-│   │   ├── generate-texture-images/route.ts # Texture image generation (gpt-image-2)
-│   │   └── recommend/route.ts             # Recommendation endpoint
-│   ├── page.tsx                           # Dual-mode landing page
-│   ├── layout.tsx                         # Root layout
-│   └── globals.css                        # Global styles + custom colors
-├── components/
-│   ├── MoodBoardDisplay.tsx               # Visual mood board renderer
-│   ├── MoodBoardInput.tsx                 # Title + category input
-│   ├── Lumi.tsx                           # AI assistant character
-│   ├── RecommendationForm.tsx             # Preference input form
-│   └── RecommendationResults.tsx          # Recommendation cards
-├── lib/
-│   ├── types.ts                           # TypeScript types (MoodBoard, Recommendations)
-│   ├── validation.ts                      # Input validation
-│   ├── gameDataset.ts                     # Curated game database
-│   ├── movieDataset.ts                    # Curated movie database
-│   ├── scoring.ts                         # Local scoring algorithm
-│   └── fallbackRecommendations.ts         # Fallback recommendation engine
-```
-
----
-
-## 🎨 Design Decisions
-
-### Why Dark Theme?
-Professional, reduces eye strain, highlights content
-
-### Why Multi-Step Flow?
-Reduces cognitive load, guides users, feels intentional
-
-### Why Fallback System?
-Ensures reliability, demonstrates system thinking, works offline
-
-### Why localStorage?
-Simple, no auth needed, fast, works offline
-
----
-
-## 🔮 Future Improvements
-
-- [ ] Hero/cover image generation for each mood board
-- [ ] Save mood boards to a browsable gallery
-- [ ] Export mood boards as shareable images
-- [ ] Board collections and filtering
-- [ ] User accounts and authentication
-- [ ] Larger recommendation databases
-- [ ] Integration with IGDB and TMDB APIs
-- [ ] Real-time AI streaming
-
----
-
-## 📝 License
-
-MIT License - feel free to use this project for learning
-
----
-
-## 👤 Author
-
-Built by Nurjahan Jhorna as a portfolio project
-
-- Portfolio: [your-portfolio.com](https://nurjahanj.vercel.app/)
-- GitHub: [@yourusername](https://github.com/Nurjahan)
-
----
-
-## 🙏 Acknowledgments
-
-- OpenAI for the API
-- Next.js team for the framework
-- Tailwind CSS for styling utilities
-- Vitest for testing framework
+- OpenAI
+- Next.js
+- Tailwind CSS
+- Vitest
+- Lucide React
