@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     const imagePromises = textures.slice(0, 4).map(async (texture: string) => {
       try {
         const response = await openai.images.generate({
-          model: 'dall-e-3',
+          model: 'gpt-image-2',
           prompt: `Abstract close-up texture photograph: "${texture}". Moody, atmospheric, soft lighting, no text, no words, no letters. Fine art photography style.`,
           n: 1,
           size: '1024x1024',
