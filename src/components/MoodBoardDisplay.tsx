@@ -14,6 +14,8 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
   const [heroLoading, setHeroLoading] = useState(false);
   const [textureImages, setTextureImages] = useState<(string | null)[]>([]);
   const [imagesLoading, setImagesLoading] = useState<boolean[]>([]);
+  const [vibeImages, setVibeImages] = useState<Record<string, string | null>>({});
+  const [vibeImagesLoading, setVibeImagesLoading] = useState<Record<string, boolean>>({});
 
   // Fetch official cover art
   useEffect(() => {
@@ -37,6 +39,35 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
 
     return () => { cancelled = true; };
   }, [board.title, board.category, board.heroImage]);
+
+  // Fetch cover art for Similar Vibes (games + movies only)
+  useEffect(() => {
+    if (!board.similarVibes || board.similarVibes.length === 0) return;
+
+    board.similarVibes.forEach((vibe) => {
+      if (vibe.category !== 'game' && vibe.category !== 'movie') return;
+      const key = `${vibe.category}-${vibe.title}`;
+      if (vibeImages[key] !== undefined) return;
+
+      setVibeImagesLoading((prev) => ({ ...prev, [key]: true }));
+
+      fetch('/api/fetch-cover-art', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: vibe.title, category: vibe.category }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setVibeImages((prev) => ({ ...prev, [key]: data.image || null }));
+        })
+        .catch(() => {
+          setVibeImages((prev) => ({ ...prev, [key]: null }));
+        })
+        .finally(() => {
+          setVibeImagesLoading((prev) => ({ ...prev, [key]: false }));
+        });
+    });
+  }, [board.similarVibes]);
 
   // Fetch texture images
   useEffect(() => {
@@ -281,14 +312,36 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
               book: '📖',
             }[vibe.category];
 
+            const vibeKey = `${vibe.category}-${vibe.title}`;
+            const vibeImg = vibeImages[vibeKey];
+            const vibeLoading = vibeImagesLoading[vibeKey];
+            const hasImage = vibe.category === 'game' || vibe.category === 'movie';
+
             return (
               <div
                 key={i}
-                className="bg-night-800 border border-night-700 rounded-2xl p-3 text-center hover:border-amber-warm/30 transition-colors"
+                className="bg-night-800 border border-night-700 rounded-2xl overflow-hidden hover:border-amber-warm/30 transition-colors"
               >
-                <span className="text-lg">{categoryEmoji}</span>
-                <p className="text-cream-200 text-sm mt-1 font-medium">{vibe.title}</p>
-                <p className="text-cream-400/50 text-xs mt-0.5">{vibe.category}</p>
+                {hasImage && (
+                  <div className="w-full aspect-[3/2] bg-night-900 relative">
+                    {vibeImg ? (
+                      <img src={vibeImg} alt={vibe.title} className="w-full h-full object-cover" />
+                    ) : vibeLoading ? (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-4 h-4 border-2 border-cream-400/30 border-t-cream-400 rounded-full animate-spin" />
+                      </div>
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-2xl">{categoryEmoji}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+                <div className="p-3 text-center">
+                  {!hasImage && <span className="text-lg">{categoryEmoji}</span>}
+                  <p className="text-cream-200 text-sm mt-1 font-medium">{vibe.title}</p>
+                  <p className="text-cream-400/50 text-xs mt-0.5">{vibe.category}</p>
+                </div>
               </div>
             );
           })}
