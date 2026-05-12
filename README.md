@@ -16,7 +16,7 @@ https://moodquest-ai.netlify.app/
 
 # 💻 GitHub Repository
 
-https://github.com/YOUR_USERNAME/moodquest
+https://github.com/NurjahanJ/moodquest
 
 ---
 
