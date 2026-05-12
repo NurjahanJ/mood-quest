@@ -18,9 +18,11 @@ export interface SimilarVibe {
 }
 
 export interface MoodBoard {
+  id?: string;
   title: string;
   category: BoardCategory;
   tagline: string;
+  heroImage?: string;
   colorPalette: ColorSwatch[];
   aestheticTags: string[];
   coreEmotions: string[];

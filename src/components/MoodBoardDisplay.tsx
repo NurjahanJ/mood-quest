@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { MoodBoard } from '@/lib/types';
-import { Palette, Heart, Cloud, Music, MapPin, Layers, Compass } from 'lucide-react';
+import { saveBoard } from '@/lib/boardStorage';
+import { Palette, Heart, Cloud, Music, MapPin, Layers, Compass, Bookmark, Check } from 'lucide-react';
 
 interface MoodBoardDisplayProps {
   board: MoodBoard;
@@ -10,9 +11,38 @@ interface MoodBoardDisplayProps {
 }
 
 export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayProps) {
+  const [heroImage, setHeroImage] = useState<string | null>(board.heroImage || null);
+  const [heroLoading, setHeroLoading] = useState(false);
   const [textureImages, setTextureImages] = useState<(string | null)[]>([]);
   const [imagesLoading, setImagesLoading] = useState<boolean[]>([]);
+  const [saved, setSaved] = useState(false);
 
+  // Fetch hero image
+  useEffect(() => {
+    if (board.heroImage) { setHeroImage(board.heroImage); return; }
+
+    let cancelled = false;
+    setHeroLoading(true);
+
+    fetch('/api/generate-hero-image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: board.title,
+        category: board.category,
+        atmosphere: board.atmosphere,
+        aestheticTags: board.aestheticTags,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => { if (!cancelled && data.image) setHeroImage(data.image); })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setHeroLoading(false); });
+
+    return () => { cancelled = true; };
+  }, [board.title, board.category, board.atmosphere, board.aestheticTags, board.heroImage]);
+
+  // Fetch texture images
   useEffect(() => {
     if (!board.textures || board.textures.length === 0) return;
     if (board.textureImages && board.textureImages.length > 0) {
@@ -65,17 +95,40 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8 animate-fade-in">
-      {/* Header */}
-      <div className="text-center space-y-3">
-        <p className="text-cream-400 text-sm uppercase tracking-wider">
-          {board.category === 'game' ? '🎮 Game' : '🎬 Movie'} Mood Board
-        </p>
-        <h2 className="text-4xl md:text-5xl font-serif font-bold text-cream-50">
-          {board.title}
-        </h2>
-        <p className="text-lg text-cream-300 font-serif italic">
-          &ldquo;{board.tagline}&rdquo;
-        </p>
+      {/* Hero Image */}
+      <div className="w-full aspect-[3/2] rounded-3xl overflow-hidden bg-night-900 border border-night-700 relative">
+        {heroImage ? (
+          <img
+            src={heroImage}
+            alt={board.title}
+            className="w-full h-full object-cover transition-opacity duration-700"
+          />
+        ) : heroLoading ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-8 h-8 border-2 border-cream-400/30 border-t-cream-400 rounded-full animate-spin" />
+          </div>
+        ) : (
+          <div
+            className="w-full h-full"
+            style={{
+              background: board.colorPalette.length > 0
+                ? `linear-gradient(135deg, ${board.colorPalette.map((c) => c.hex).join(', ')})`
+                : undefined,
+            }}
+          />
+        )}
+        {/* Overlay title on hero */}
+        <div className="absolute inset-0 bg-gradient-to-t from-night-950/80 via-transparent to-transparent flex flex-col justify-end p-6 md:p-8">
+          <p className="text-cream-400 text-sm uppercase tracking-wider mb-1">
+            {board.category === 'game' ? '🎮 Game' : '🎬 Movie'} Mood Board
+          </p>
+          <h2 className="text-3xl md:text-5xl font-serif font-bold text-cream-50">
+            {board.title}
+          </h2>
+          <p className="text-lg text-cream-300 font-serif italic mt-1">
+            &ldquo;{board.tagline}&rdquo;
+          </p>
+        </div>
       </div>
 
       {/* Color Palette */}
@@ -246,13 +299,29 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
         </div>
       </section>
 
-      {/* Try another */}
-      <div className="text-center pt-4">
+      {/* Actions */}
+      <div className="flex justify-center gap-4 pt-4">
+        <button
+          onClick={() => {
+            const boardToSave = { ...board, heroImage: heroImage || undefined, textureImages: textureImages.filter(Boolean) as string[] };
+            saveBoard(boardToSave);
+            setSaved(true);
+            setTimeout(() => setSaved(false), 2000);
+          }}
+          className={`px-6 py-3 rounded-full border transition-all flex items-center gap-2 ${
+            saved
+              ? 'bg-sage-warm/20 border-sage-warm/40 text-sage-warm'
+              : 'bg-night-800 text-cream-200 border-night-700 hover:border-amber-warm/40 hover:text-amber-warm'
+          }`}
+        >
+          {saved ? <Check className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+          {saved ? 'Saved!' : 'Save Board'}
+        </button>
         <button
           onClick={onReset}
           className="px-6 py-3 bg-night-800 text-cream-200 rounded-full border border-night-700 hover:border-amber-warm/40 hover:text-amber-warm transition-all"
         >
-          Create another mood board
+          Create another
         </button>
       </div>
     </div>
