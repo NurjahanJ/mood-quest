@@ -7,11 +7,11 @@ const openai = new OpenAI({
 
 export async function POST(request: NextRequest) {
   try {
-    const { textures } = await request.json();
+    const { texture } = await request.json();
 
-    if (!textures || !Array.isArray(textures) || textures.length === 0) {
+    if (!texture || typeof texture !== 'string') {
       return NextResponse.json(
-        { error: 'textures array is required' },
+        { error: 'texture string is required' },
         { status: 400 }
       );
     }
@@ -23,36 +23,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate images for each texture in parallel
-    const imagePromises = textures.slice(0, 4).map(async (texture: string) => {
-      try {
-        const response = await openai.images.generate({
-          model: 'gpt-image-2',
-          prompt: `Abstract close-up texture photograph: "${texture}". Moody, atmospheric, soft lighting, no text, no words, no letters. Fine art photography style.`,
-          size: '1024x1024',
-          quality: 'low',
-          output_format: 'webp',
-        });
-
-        const b64 = response.data?.[0]?.b64_json;
-        if (b64) {
-          return `data:image/webp;base64,${b64}`;
-        }
-        return null;
-      } catch (err) {
-        console.error(`Failed to generate image for texture "${texture}":`, err);
-        return null;
-      }
+    const response = await openai.images.generate({
+      model: 'gpt-image-2',
+      prompt: `Abstract close-up texture photograph: "${texture}". Moody, atmospheric, soft lighting, no text, no words, no letters. Fine art photography style.`,
+      size: '1024x1024',
+      quality: 'low',
+      output_format: 'webp',
     });
 
-    const images = await Promise.all(imagePromises);
+    const b64 = response.data?.[0]?.b64_json;
+    if (b64) {
+      return NextResponse.json({ image: `data:image/webp;base64,${b64}` });
+    }
 
-    return NextResponse.json({ images });
+    return NextResponse.json({ image: null });
   } catch (error) {
-    console.error('Error in generate-texture-images:', error);
-    return NextResponse.json(
-      { error: 'Failed to generate texture images' },
-      { status: 500 }
-    );
+    console.error(`Failed to generate image for texture:`, error);
+    return NextResponse.json({ image: null });
   }
 }

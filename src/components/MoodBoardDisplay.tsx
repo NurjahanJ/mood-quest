@@ -11,34 +11,47 @@ interface MoodBoardDisplayProps {
 
 export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayProps) {
   const [textureImages, setTextureImages] = useState<(string | null)[]>([]);
-  const [imagesLoading, setImagesLoading] = useState(false);
+  const [imagesLoading, setImagesLoading] = useState<boolean[]>([]);
 
   useEffect(() => {
     if (!board.textures || board.textures.length === 0) return;
-    // If images were already provided (cached), skip fetching
     if (board.textureImages && board.textureImages.length > 0) {
       setTextureImages(board.textureImages);
       return;
     }
 
     let cancelled = false;
-    setImagesLoading(true);
+    const count = Math.min(board.textures.length, 4);
+    setTextureImages(new Array(count).fill(null));
+    setImagesLoading(new Array(count).fill(true));
 
-    fetch('/api/generate-texture-images', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ textures: board.textures }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (!cancelled && data.images) {
-          setTextureImages(data.images);
-        }
+    board.textures.slice(0, 4).forEach((texture, i) => {
+      fetch('/api/generate-texture-images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texture }),
       })
-      .catch(() => {})
-      .finally(() => {
-        if (!cancelled) setImagesLoading(false);
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          if (!cancelled && data.image) {
+            setTextureImages((prev) => {
+              const next = [...prev];
+              next[i] = data.image;
+              return next;
+            });
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          if (!cancelled) {
+            setImagesLoading((prev) => {
+              const next = [...prev];
+              next[i] = false;
+              return next;
+            });
+          }
+        });
+    });
 
     return () => { cancelled = true; };
   }, [board.textures, board.textureImages]);
@@ -180,7 +193,7 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
                     alt={texture}
                     className="w-full h-full object-cover transition-opacity duration-500"
                   />
-                ) : imagesLoading ? (
+                ) : imagesLoading[i] ? (
                   <div className="w-full h-full flex items-center justify-center">
                     <div className="w-6 h-6 border-2 border-cream-400/30 border-t-cream-400 rounded-full animate-spin" />
                   </div>
