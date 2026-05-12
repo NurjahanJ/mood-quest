@@ -21,7 +21,6 @@ type AppMode = 'landing' | 'mood-board' | 'recommend';
 
 export default function Home() {
   const [mode, setMode] = useState<AppMode>('landing');
-
   // Mood board state
   const [board, setBoard] = useState<MoodBoard | null>(null);
   const [boardLoading, setBoardLoading] = useState(false);

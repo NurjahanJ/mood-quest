@@ -1,7 +1,8 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { GameRecommendation, MovieRecommendation } from '@/lib/types';
-import { Star } from 'lucide-react';
+import { Star, Image as ImageIcon } from 'lucide-react';
 
 interface RecommendationResultsProps {
   recommendations: (GameRecommendation | MovieRecommendation)[];
@@ -9,6 +10,34 @@ interface RecommendationResultsProps {
 }
 
 export default function RecommendationResults({ recommendations, onReset }: RecommendationResultsProps) {
+  const [coverImages, setCoverImages] = useState<Record<string, string | null>>({});
+  const [loadingImages, setLoadingImages] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    recommendations.forEach((rec) => {
+      const key = `${rec.category}-${rec.title}`;
+      if (coverImages[key] !== undefined) return;
+
+      setLoadingImages((prev) => ({ ...prev, [key]: true }));
+
+      fetch('/api/fetch-cover-art', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: rec.title, category: rec.category }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setCoverImages((prev) => ({ ...prev, [key]: data.image || null }));
+        })
+        .catch(() => {
+          setCoverImages((prev) => ({ ...prev, [key]: null }));
+        })
+        .finally(() => {
+          setLoadingImages((prev) => ({ ...prev, [key]: false }));
+        });
+    });
+  }, [recommendations]);
+
   const getConfidenceStyle = (confidence: number) => {
     if (confidence >= 90) return 'border-sage-warm/50 bg-sage-warm/10 text-sage-warm';
     if (confidence >= 75) return 'border-amber-warm/50 bg-amber-warm/10 text-amber-warm';
@@ -33,8 +62,35 @@ export default function RecommendationResults({ recommendations, onReset }: Reco
         return (
           <div
             key={rec.id || index}
-            className="bg-night-900 rounded-3xl border border-night-700 p-6 hover:border-night-600 transition-all"
+            className="bg-night-900 rounded-3xl border border-night-700 overflow-hidden hover:border-night-600 transition-all"
           >
+            {/* Cover Image */}
+            {(() => {
+              const key = `${rec.category}-${rec.title}`;
+              const img = coverImages[key];
+              const loading = loadingImages[key];
+              return (
+                <div className="w-full h-48 md:h-56 bg-night-800 relative">
+                  {img ? (
+                    <img
+                      src={img}
+                      alt={rec.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : loading ? (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="w-6 h-6 border-2 border-cream-400/30 border-t-cream-400 rounded-full animate-spin" />
+                    </div>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <ImageIcon className="w-10 h-10 text-cream-400/20" />
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
+            <div className="p-6">
             {/* Header */}
             <div className="flex items-start justify-between gap-4 mb-4">
               <div className="flex items-center gap-3">
@@ -88,6 +144,7 @@ export default function RecommendationResults({ recommendations, onReset }: Reco
                   </span>
                 ))}
               </div>
+            </div>
             </div>
           </div>
         );
