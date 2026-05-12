@@ -1,8 +1,8 @@
 # MoodQuest
 
-**AI-Powered Game & Movie Recommendation Engine**
+**AI-Powered Mood Board Generator & Game/Movie Recommendation Engine**
 
-MoodQuest is a portfolio-quality web application that recommends games and movies based on your current mood, available time, platform, and preferences. Built to demonstrate AI Product Engineering skills.
+MoodQuest is a dual-mode creative tool that generates rich, visual mood boards for games and movies using AI, and provides personalized recommendations based on your mood, time, and preferences. Built to demonstrate AI Product Engineering skills.
 
 ---
 
@@ -10,7 +10,8 @@ MoodQuest is a portfolio-quality web application that recommends games and movie
 
 This project showcases skills essential for an AI Product Engineer role:
 
-- **AI Integration:** OpenAI API with structured JSON outputs
+- **AI Integration:** OpenAI API with structured JSON outputs and image generation
+- **Multimodal AI:** Text generation (GPT-4o-mini) + image generation (gpt-image-2)
 - **Product Thinking:** User-centric design with clear value proposition
 - **System Design:** Fallback logic ensures reliability
 - **Full-Stack Development:** Next.js, TypeScript, API routes
@@ -149,32 +150,41 @@ Rather than building a generic chatbot, I wanted to create a more complete AI pr
 
 ## ✨ Features
 
-### Dual Recommendation System
+### Mood Board Generator
+- **AI-generated mood boards** for any game or movie title
+- **Color palette** with 5 poetic named colors and hex codes
+- **Core emotions** and **aesthetic tags** capturing the title's essence
+- **Atmospheric description** — evocative 2-3 sentence scene-setting
+- **Curated music playlist** — 5 real tracks with artist names
+- **AI-generated texture images** — abstract photography via gpt-image-2 for each sensory texture
+- **Best setting** — when and where to experience it
+- **Similar vibes** — cross-media recommendations (games, movies, music, art, books)
+- **Progressive image loading** — board text appears instantly, images fade in as they generate
+
+### Recommendation System
 - **Games:** Platform-specific recommendations (PC, consoles, mobile)
 - **Movies:** Streaming platform recommendations (Netflix, Disney+, etc.)
 - **3 Modes:** Quick Match, Deep Match, Surprise Me
-
-### AI-Powered Personalization
 - Generates taste profiles from preferences
 - Explains why each recommendation fits
 - Provides confidence scores and breakdowns
 
-### User Feedback Loop
-- Like/Dislike recommendations
-- Save favorites
-- Refine recommendations based on feedback
-- View recommendation history
+### Dual-Mode Landing Page
+- Choose between Mood Board Generator or Recommendation System
+- Conversational UI with Lumi assistant character
+- Seamless switching between modes
 
 ### Intelligent Fallback System
 - Local scoring algorithm when AI unavailable
-- 20+ curated games and movies
+- Curated fallback mood boards for popular titles
+- 20+ curated games and movies for recommendations
 - Maintains same quality and format
 
 ### Professional UI/UX
-- Clean, dark theme design
+- Warm dark theme with custom color system
 - Responsive layout (mobile, tablet, desktop)
 - Loading states and error handling
-- Smooth transitions
+- Smooth transitions and progressive rendering
 
 ---
 
@@ -183,9 +193,11 @@ Rather than building a generic chatbot, I wanted to create a more complete AI pr
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
-- **AI:** OpenAI API (GPT-4o-mini)
+- **AI Text:** OpenAI GPT-4o-mini (mood boards + recommendations)
+- **AI Images:** OpenAI gpt-image-2 (texture photography)
+- **Icons:** Lucide React
 - **Testing:** Vitest
-- **Storage:** localStorage
+- **Hosting:** Netlify
 
 ---
 
@@ -249,40 +261,26 @@ npm run test:watch
 
 ## 📖 How It Works
 
-### User Flow
+### Mood Board Flow
 
-1. **Select Category:** Choose between games or movies
-2. **Select Mode:** Quick Match, Deep Match, or Surprise Me
-3. **Fill Preferences:** Mood, time, platform, genre, etc.
-4. **Get Recommendations:** AI generates 3 personalized picks
-5. **Provide Feedback:** Like, dislike, or save recommendations
-6. **Refine (Optional):** Get improved recommendations based on feedback
+1. **Choose Mode:** Select "Mood Board" from the landing page
+2. **Enter Title:** Type a game or movie name and select the category
+3. **AI Generates Board:** GPT-4o-mini creates a structured mood board (colors, emotions, atmosphere, playlist, textures, vibes)
+4. **Texture Images Load:** gpt-image-2 generates abstract photography for each texture, appearing progressively
+5. **Explore & Reset:** Browse the board, then create another
+
+### Recommendation Flow
+
+1. **Choose Mode:** Select "Recommendations" from the landing page
+2. **Fill Preferences:** Mood, time, platform, genre, etc.
+3. **Get Recommendations:** AI generates 3 personalized picks with explanations
 
 ### AI Integration
 
-The app uses OpenAI's GPT-4o-mini with:
-- **Structured prompts** that enforce JSON output
-- **Dynamic system prompts** based on category and mode
-- **Strict validation** of AI responses
-- **Fallback system** when AI is unavailable
-
-### Recommendation Logic
-
-**AI Mode (Primary):**
-- Analyzes user preferences
-- Generates taste profile
-- Returns 3 recommendations with explanations
-- Includes confidence scores
-
-**Fallback Mode (When AI Unavailable):**
-- Uses local scoring algorithm
-- Ranks items based on:
-  - Mood match (weighted by mode)
-  - Time compatibility
-  - Platform availability
-  - Genre preference
-  - Avoid tag penalties
-- Returns top 3 with generated explanations
+The app uses two OpenAI models:
+- **GPT-4o-mini:** Structured JSON generation for mood boards and recommendations
+- **gpt-image-2:** Abstract texture photography (4 images per board, staggered to respect rate limits)
+- **Fallback system** with curated boards and local scoring when AI is unavailable
 
 ---
 
@@ -292,34 +290,25 @@ The app uses OpenAI's GPT-4o-mini with:
 src/
 ├── app/
 │   ├── api/
-│   │   ├── recommend/route.ts    # Main recommendation endpoint
-│   │   └── refine/route.ts       # Refinement endpoint
-│   ├── page.tsx                  # Main application
-│   ├── layout.tsx                # Root layout
-│   └── globals.css               # Global styles
+│   │   ├── generate-board/route.ts        # Mood board generation (GPT-4o-mini)
+│   │   ├── generate-texture-images/route.ts # Texture image generation (gpt-image-2)
+│   │   └── recommend/route.ts             # Recommendation endpoint
+│   ├── page.tsx                           # Dual-mode landing page
+│   ├── layout.tsx                         # Root layout
+│   └── globals.css                        # Global styles + custom colors
 ├── components/
-│   ├── CategorySelector.tsx      # Game vs Movie selection
-│   ├── ModeSelector.tsx          # Mode selection
-│   ├── PreferenceForm.tsx        # Dynamic preference form
-│   ├── RecommendationCard.tsx    # Individual recommendation
-│   ├── ResultsSection.tsx        # Results container
-│   ├── TasteProfile.tsx          # Taste profile display
-│   ├── RecommendationHistory.tsx # History display
-│   ├── GameComparison.tsx        # Game comparison
-│   └── MovieComparison.tsx       # Movie comparison
+│   ├── MoodBoardDisplay.tsx               # Visual mood board renderer
+│   ├── MoodBoardInput.tsx                 # Title + category input
+│   ├── Lumi.tsx                           # AI assistant character
+│   ├── RecommendationForm.tsx             # Preference input form
+│   └── RecommendationResults.tsx          # Recommendation cards
 ├── lib/
-│   ├── types.ts                  # TypeScript types
-│   ├── validation.ts             # Input validation
-│   ├── gameDataset.ts            # Game database
-│   ├── movieDataset.ts           # Movie database
-│   ├── scoring.ts                # Scoring algorithm
-│   ├── fallbackRecommendations.ts # Fallback system
-│   └── storage.ts                # localStorage utilities
-└── tests/
-    ├── scoring.test.ts
-    ├── fallbackRecommendations.test.ts
-    ├── validation.test.ts
-    └── storage.test.ts
+│   ├── types.ts                           # TypeScript types (MoodBoard, Recommendations)
+│   ├── validation.ts                      # Input validation
+│   ├── gameDataset.ts                     # Curated game database
+│   ├── movieDataset.ts                    # Curated movie database
+│   ├── scoring.ts                         # Local scoring algorithm
+│   └── fallbackRecommendations.ts         # Fallback recommendation engine
 ```
 
 ---
@@ -342,14 +331,14 @@ Simple, no auth needed, fast, works offline
 
 ## 🔮 Future Improvements
 
+- [ ] Hero/cover image generation for each mood board
+- [ ] Save mood boards to a browsable gallery
+- [ ] Export mood boards as shareable images
+- [ ] Board collections and filtering
 - [ ] User accounts and authentication
 - [ ] Larger recommendation databases
 - [ ] Integration with IGDB and TMDB APIs
-- [ ] TV series recommendations
-- [ ] Book recommendations
-- [ ] Collaborative filtering
-- [ ] Social sharing features
-- [ ] Mobile app (React Native)
+- [ ] Real-time AI streaming
 
 ---
 
