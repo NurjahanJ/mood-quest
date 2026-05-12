@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { MoodBoard } from '@/lib/types';
-import { saveBoard } from '@/lib/boardStorage';
-import { Palette, Heart, Cloud, Music, MapPin, Layers, Compass, Bookmark, Check } from 'lucide-react';
+import { Palette, Heart, Cloud, Music, MapPin, Layers, Compass } from 'lucide-react';
 
 interface MoodBoardDisplayProps {
   board: MoodBoard;
@@ -15,7 +14,6 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
   const [heroLoading, setHeroLoading] = useState(false);
   const [textureImages, setTextureImages] = useState<(string | null)[]>([]);
   const [imagesLoading, setImagesLoading] = useState<boolean[]>([]);
-  const [saved, setSaved] = useState(false);
 
   // Fetch hero image
   useEffect(() => {
@@ -299,29 +297,13 @@ export default function MoodBoardDisplay({ board, onReset }: MoodBoardDisplayPro
         </div>
       </section>
 
-      {/* Actions */}
-      <div className="flex justify-center gap-4 pt-4">
-        <button
-          onClick={() => {
-            const boardToSave = { ...board, heroImage: heroImage || undefined, textureImages: textureImages.filter(Boolean) as string[] };
-            saveBoard(boardToSave);
-            setSaved(true);
-            setTimeout(() => setSaved(false), 2000);
-          }}
-          className={`px-6 py-3 rounded-full border transition-all flex items-center gap-2 ${
-            saved
-              ? 'bg-sage-warm/20 border-sage-warm/40 text-sage-warm'
-              : 'bg-night-800 text-cream-200 border-night-700 hover:border-amber-warm/40 hover:text-amber-warm'
-          }`}
-        >
-          {saved ? <Check className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
-          {saved ? 'Saved!' : 'Save Board'}
-        </button>
+      {/* Try another */}
+      <div className="text-center pt-4">
         <button
           onClick={onReset}
           className="px-6 py-3 bg-night-800 text-cream-200 rounded-full border border-night-700 hover:border-amber-warm/40 hover:text-amber-warm transition-all"
         >
-          Create another
+          Create another mood board
         </button>
       </div>
     </div>

@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Palette, Sparkles, LayoutGrid } from 'lucide-react';
+import { Palette, Sparkles } from 'lucide-react';
 import Lumi from '@/components/Lumi';
 import MoodBoardInput from '@/components/MoodBoardInput';
 import MoodBoardDisplay from '@/components/MoodBoardDisplay';
@@ -21,7 +20,6 @@ import {
 type AppMode = 'landing' | 'mood-board' | 'recommend';
 
 export default function Home() {
-  const router = useRouter();
   const [mode, setMode] = useState<AppMode>('landing');
 
   // Mood board state
@@ -179,16 +177,6 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Gallery Link */}
-            <div className="text-center mt-8">
-              <button
-                onClick={() => router.push('/gallery')}
-                className="text-sm text-cream-400 hover:text-amber-warm transition-colors flex items-center gap-2 mx-auto"
-              >
-                <LayoutGrid className="w-4 h-4" />
-                View saved boards
-              </button>
-            </div>
           </div>
         )}
 
